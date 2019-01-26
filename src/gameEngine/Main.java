@@ -26,6 +26,8 @@ import toolBox.MousePicker;
 public class Main {
 
 	public static int gold = 100;
+	static int goldMineCost = 10;
+	static int kaserneCost = 30;
 	
 	static List<Entity> entities = new ArrayList<Entity>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
@@ -98,47 +100,45 @@ public class Main {
 	}
 	
 	//process game logic
-	public static void updateGame(MousePicker mousePicker) {
-		if(mousePicker.isLeftButtonDown() == false) {
-			for (Entity entity: entities){
-				if(entity instanceof GoldMine) {
-					//entities.get(1).setPosition(new Vector3f(mousePicker.getCurrentRay().x * 11.5f, mousePicker.getCurrentRay().y * 11.5f, -10f));
-				}
-			}
-		}
-		if(mousePicker.isLeftButtonDown() == true) {
-			System.out.println(mousePicker.getCurrentRay());
-			for (Entity entity: entities){
-				if(entity instanceof GoldMine) {
-					entities.get(1).setPosition(new Vector3f(mousePicker.getCurrentRay().x * 11.5f, mousePicker.getCurrentRay().y * 11.5f, -10f));
-					
-				}
+	public static void updateGame(MousePicker picker) {
+		
+		GoldMine goldmine = null;
+		Kaserne kaserne = null;
+		Soldat soldat = null;
+		for(int i = 0; i < entities.size(); i++) {
+			if(entities.get(i) instanceof GoldMine) {
+				goldmine = (GoldMine) entities.get(i);
+			} else if(entities.get(i) instanceof Kaserne) {
+				kaserne = (Kaserne) entities.get(i);
+			} else if(entities.get(i) instanceof Soldat) {
+				soldat = (Soldat) entities.get(i);
 			}
 		}
 		
+		if(goldmine != null) {
+			goldmine.update(picker);
+		}
+		if(soldat != null) {
+			soldat.update(picker);
+		}
+		if(kaserne != null) {
+			kaserne.update(picker);
+		}
+		
 		while (Keyboard.next()) {
-	        if (Keyboard.getEventKeyState()) {
-	            if(Keyboard.getEventKey() == Keyboard.KEY_1) {
-	            	for (Entity entity: entities){
-	    				if(entity instanceof GoldMine) {
-	    					GoldMine goldmine = (GoldMine) entities.get(1);
-	    					goldmine.takeGold();
-	    				}
-	    			}
-	            }
-	            if(Keyboard.getEventKey() == Keyboard.KEY_U) {
-	            	for (Entity entity: entities){
-	    				if(entity instanceof GoldMine) {
-	    					GoldMine goldmine = (GoldMine) entities.get(1);
-	    					goldmine.upgrade();
-	    				}
-	    			}
-	            }
+			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
-	            	GoldMine goldMine1 = new GoldMine(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, 1);
-	            	goldMine1.generateGold();
-	            	entities.add(goldMine1);
-	            	goldMine1.setLocationSet(false);
+					if(gold >= goldMineCost) {
+	            		GoldMine goldMine1 = new GoldMine(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, 1);
+	            		gold -= goldMineCost;
+	            		entities.add(goldMine1);
+	            	}
+	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
+	            	if(gold >= kaserneCost) {
+	            		Kaserne kaserne1 = new Kaserne(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, 1);
+	            		gold -= kaserneCost;
+	            		entities.add(kaserne1);
+	            	}
 	            }
 	        } else {
 	        
