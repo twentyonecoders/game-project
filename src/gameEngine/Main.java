@@ -81,17 +81,22 @@ public class Main {
 	
 	//initialize GUI
 	public static void setUpGUI(Loader loader, List<GUITexture> guis, FontType font) {
-		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.7f), new Vector2f(0.07f, 0.14f));
-		GUITexture guiKaserne = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.5f, -0.7f), new Vector2f(0.07f, 0.14f));
+		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.65f), new Vector2f(0.07f, 0.14f));
+		GUITexture guiGoldMineBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.8f, -0.65f), new Vector2f(0.08f, 0.15f));
+		GUITexture guiKaserne = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.65f), new Vector2f(0.07f, 0.14f));
+		GUITexture guiKaserneBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.45f, -0.65f), new Vector2f(0.08f, 0.15f));
+		guis.add(guiGoldMineBack);
+		guis.add(guiKaserneBack);
 		guis.add(guiGoldMine);
 		guis.add(guiKaserne);
-		GUIText goldMineText = new GUIText("Press 'G'", 2.5f, font, new Vector2f(0.03f, 0.9f), 1f, false);
-		GUIText kaserneText = new GUIText("Press 'K'", 2.5f, font, new Vector2f(0.2f, 0.9f), 1f, false);
+		GUIText goldMineText = new GUIText("Press 'G'", 2.5f, font, new Vector2f(0.03f, 0.9f), 0.15f, true);
+		GUIText kaserneText = new GUIText("Press 'K'", 2.5f, font, new Vector2f(0.2f, 0.9f), 0.15f, true);
 	}
 	
 	//render GUI
 	public static void renderGUI(FontType font, GUIRenderer guiRenderer, List<GUITexture> guiGraphics) {
 		GUIText text = new GUIText("Gold : " + gold, 3, font, new Vector2f(0.01f, 0.01f), 1f, false);
+		text.setColour(218,165,32);
 		guiRenderer.render(guiGraphics);
 		TextMaster.render();
 		TextMaster.removeText(text);
