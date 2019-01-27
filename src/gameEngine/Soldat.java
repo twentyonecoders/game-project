@@ -17,7 +17,7 @@ public class Soldat extends Image{
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(this.isClicked == true) {
+		if(isClicked == true) {
 			run(picker);
 		}
 	}
@@ -26,7 +26,7 @@ public class Soldat extends Image{
 		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_M) { this.setLocationSet(false); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_U) { System.out.println("Soldat upgraded"); }
 			}
 		}

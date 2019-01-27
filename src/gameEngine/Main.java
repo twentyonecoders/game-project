@@ -57,7 +57,7 @@ public class Main {
 		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 10);
 		
 		while(!Display.isCloseRequested()) {
-			camera.move();
+			//camera.move();
 			picker.update();
 			renderer.prepare();
 			shader.start();

@@ -23,13 +23,13 @@ public class GoldMine extends Image{
 	
 	public GoldMine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
-		this.ID = id;
+		ID = id;
 		generateGold();
 	}
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(this.isClicked == true) {
+		if(isClicked == true) {
 			run(picker);
 			showGUI();
 		} else {
@@ -44,15 +44,15 @@ public class GoldMine extends Image{
 		}
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_U) { this.upgrade(); }
-				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { this.setLocationSet(false); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_U) { upgrade(); }
+				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
 	}
 	
 	protected void showGUI() {
 		super.showGUI();
-		GUIText upgradeText = new GUIText("Press 'U' to upgrade (" + upgradeCost + " Gold)", 1.5f, Main.font, new Vector2f(0.35f, 0.3f), 0.28f, true);
+		GUIText upgradeText = new GUIText("Press 'U' to upgrade (" + upgradeCost + " Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
 		upgradeText.setColour(255, 255, 255);
 		texts.add(upgradeText);
 	}
@@ -79,10 +79,10 @@ public class GoldMine extends Image{
 	private void upgrade() {
 		if(level < 5 && Main.gold >= upgradeCost) {
 			level++;
-			if(level == 2) { this.changeImage("Goldmine_2"); }
-			else if(level == 3) { this.changeImage("Goldmine_3"); }
-			else if(level == 4) { this.changeImage("Goldmine_4"); }
-			else if(level == 5) { this.changeImage("Goldmine_5"); }
+			if(level == 2) { changeImage("Goldmine_2"); }
+			else if(level == 3) { changeImage("Goldmine_3"); }
+			else if(level == 4) { changeImage("Goldmine_4"); }
+			else if(level == 5) { changeImage("Goldmine_5"); }
 			maxGold += 10;
 			prodRate++;
 			Main.gold -= upgradeCost;

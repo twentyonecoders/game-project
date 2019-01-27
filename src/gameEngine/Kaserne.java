@@ -19,7 +19,7 @@ public class Kaserne extends Image{
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(this.isClicked == true) {
+		if(isClicked == true) {
 			run(picker);
 			showGUI();
 		} else {
@@ -31,7 +31,7 @@ public class Kaserne extends Image{
 		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_M) { this.setLocationSet(false); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_U) { System.out.println("Kaserne upgraded"); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_1) { buySoldier(); }
 			}
@@ -40,7 +40,7 @@ public class Kaserne extends Image{
 	
 	protected void showGUI() {
 		super.showGUI();
-		GUIText buySoldierText = new GUIText("Press '1' to buy Soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.35f, 0.3f), 0.28f, true);
+		GUIText buySoldierText = new GUIText("Press '1' to buy Soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
 		buySoldierText.setColour(255, 255, 255);
 		texts.add(buySoldierText);
 	}
