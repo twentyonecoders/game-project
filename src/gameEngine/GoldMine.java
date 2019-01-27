@@ -29,13 +29,15 @@ public class GoldMine extends Image{
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		//GUIText text = new GUIText("Level 1", 1, Main.font, new Vector2f(0.5f, 0.5f), 0.04f, true);
 		if(this.isClicked == true) {
 			run(picker);
+			showGUI();
+		} else {
+			hideGUI();
 		}
 	}
 	
-	public void run(MousePicker picker) {
+	protected void run(MousePicker picker) {
 		super.run(picker);
 		if(picker.isLeftButtonDown()) {
 			takeGold();
@@ -48,9 +50,15 @@ public class GoldMine extends Image{
 		}
 	}
 	
-	public void generateGold(){
+	protected void showGUI() {
+		super.showGUI();
+		GUIText upgradeText = new GUIText("Press 'U' to upgrade (" + upgradeCost + " Gold)", 1.5f, Main.font, new Vector2f(0.35f, 0.3f), 0.28f, true);
+		upgradeText.setColour(255, 255, 255);
+		texts.add(upgradeText);
+	}
+	
+	private void generateGold(){
 		Timer timer = new Timer();
-		    
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				if (gold <= maxGold - 1) {
@@ -63,13 +71,13 @@ public class GoldMine extends Image{
 		}, 1*1000, 1*1000);
 	}
 	
-	public void takeGold() {
+	private void takeGold() {
 		Main.gold += gold;
 		gold = 0;
 	}
 	
-	public void upgrade() {
-		if(level < 5) {
+	private void upgrade() {
+		if(level < 5 && Main.gold >= upgradeCost) {
 			level++;
 			if(level == 2) { this.changeImage("Goldmine_2"); }
 			else if(level == 3) { this.changeImage("Goldmine_3"); }
@@ -79,6 +87,7 @@ public class GoldMine extends Image{
 			prodRate++;
 			Main.gold -= upgradeCost;
 			upgradeCost *= 2;
+			hideGUI();
 		} else { System.out.println("Goldmine Nr " + ID + " ist auf Maximallevel!"); }
 	}
 

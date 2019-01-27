@@ -27,7 +27,7 @@ import toolBox.MousePicker;
 
 public class Main {
 
-	static FontType font;
+	public static FontType font;
 	
 	public static int gold = 100;
 	static int goldMineCost = 10;
@@ -54,7 +54,7 @@ public class Main {
 		images.clear();
 		guiGraphics.clear();
 		setUpGUI(loader, guiGraphics, font);
-		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 1);
+		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 10);
 		
 		while(!Display.isCloseRequested()) {
 			camera.move();
@@ -91,14 +91,18 @@ public class Main {
 		guis.add(guiKaserneBack);
 		guis.add(guiGoldMine);
 		guis.add(guiKaserne);
-		GUIText goldMineText = new GUIText("Press 'G'", 2.5f, font, new Vector2f(0.03f, 0.9f), 0.15f, true);
-		GUIText kaserneText = new GUIText("Press 'K'", 2.5f, font, new Vector2f(0.2f, 0.9f), 0.15f, true);
+		GUIText goldMineCost = new GUIText("Cost : 10 Gold", 1.5f, font, new Vector2f(0.03f, 0.95f), 0.15f, true);
+		GUIText kaserneCost = new GUIText("Cost : 30 Gold", 1.5f, font, new Vector2f(0.2f, 0.95f), 0.15f, true);
+		goldMineCost.setColour(255, 255, 0);
+		kaserneCost.setColour(255, 255, 0);
+		GUIText goldMineText = new GUIText("Press 'G'", 1.5f, font, new Vector2f(0.03f, 0.9f), 0.15f, true);
+		GUIText kaserneText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.2f, 0.9f), 0.15f, true);
 	}
 	
 	//render GUI
 	public static void renderGUI(FontType font, GUIRenderer guiRenderer, List<GUITexture> guiGraphics) {
 		GUIText text = new GUIText("Gold : " + gold, 3, font, new Vector2f(0.01f, 0.01f), 1f, false);
-		text.setColour(218,165,32);
+		text.setColour(255, 255, 0);
 		guiRenderer.render(guiGraphics);
 		TextMaster.render();
 		TextMaster.removeText(text);

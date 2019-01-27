@@ -1,7 +1,13 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import fonts.GUIText;
+import fonts.TextMaster;
 import gameEngine.Main;
 import models.TexturedModel;
 import renderEngine.Loader;
@@ -14,9 +20,12 @@ public class Image extends Entity{
 	public boolean isClicked;
 	public boolean locationSet = true;
 	
+	public static List<GUIText> texts = new ArrayList<GUIText>();
+	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
+		
 	}
 	
 	public static float[] vertices = {
@@ -50,7 +59,7 @@ public class Image extends Entity{
 		}
 	}
 	
-	public void run(MousePicker picker) {
+	protected void run(MousePicker picker) {
 		if(picker.isRightButtonDown()) {
 			this.setClicked(false);
 		}
@@ -62,7 +71,19 @@ public class Image extends Entity{
 		}
 	}
 	
-	public boolean hit(MousePicker picker) {
+	protected void showGUI() {
+		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.35f, 0.2f), 0.27f, true);
+		moveText.setColour(255, 255, 255);
+		texts.add(moveText);
+	}
+	
+	protected static void hideGUI() {
+		for(GUIText text: texts) {
+			TextMaster.removeText(text);
+		}
+	}
+	
+	private boolean hit(MousePicker picker) {
 		if(picker.getCurrentRay().x * 10 <= this.getPosition().x + 0.5f &&
 				picker.getCurrentRay().x * 10 >= this.getPosition().x - 0.5f &&
 				picker.getCurrentRay().y * 10 <= this.getPosition().y + 0.5f &&
@@ -71,10 +92,6 @@ public class Image extends Entity{
 		} else {
 			return false;
 		}
-	}
-	
-	public boolean isClicked() {
-		return isClicked;
 	}
 
 	public void setClicked(boolean isClicked) {
@@ -89,11 +106,11 @@ public class Image extends Entity{
 		}
 	}
 	
-	public boolean isLocationSet() {
+	protected boolean isLocationSet() {
 		return locationSet;
 	}
 
-	public void setLocationSet(boolean locationSet) {
+	protected void setLocationSet(boolean locationSet) {
 		this.locationSet = locationSet;
 	}
 

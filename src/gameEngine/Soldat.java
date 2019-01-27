@@ -22,7 +22,7 @@ public class Soldat extends Image{
 		}
 	}
 	
-	public void run(MousePicker picker) {
+	protected void run(MousePicker picker) {
 		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {

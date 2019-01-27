@@ -1,9 +1,11 @@
 package gameEngine;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Image;
+import fonts.GUIText;
 import toolBox.MousePicker;
 
 public class Kaserne extends Image{
@@ -19,6 +21,9 @@ public class Kaserne extends Image{
 		super.update(picker);
 		if(this.isClicked == true) {
 			run(picker);
+			showGUI();
+		} else {
+			hideGUI();
 		}
 	}
 	
@@ -32,8 +37,15 @@ public class Kaserne extends Image{
 			}
 		}
 	}
+	
+	protected void showGUI() {
+		super.showGUI();
+		GUIText buySoldierText = new GUIText("Press '1' to buy Soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.35f, 0.3f), 0.28f, true);
+		buySoldierText.setColour(255, 255, 255);
+		texts.add(buySoldierText);
+	}
 		
-	public void buySoldier() {
+	private void buySoldier() {
 		Soldat soldat = new Soldat(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, Main.soldaten.size() + 1);
 		Main.soldaten.add(soldat);
 		Main.gold -= 10;
