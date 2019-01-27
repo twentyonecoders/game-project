@@ -27,6 +27,8 @@ import toolBox.MousePicker;
 
 public class Main {
 
+	static FontType font;
+	
 	public static int gold = 100;
 	static int goldMineCost = 10;
 	static int kaserneCost = 30;
@@ -47,12 +49,12 @@ public class Main {
 		MousePicker picker = new MousePicker(renderer.getProjectionMatrix(), camera);
 		GUIRenderer guiRenderer = new GUIRenderer(loader);
 		TextMaster.init(loader);
-		FontType font = new FontType(loader.loadTexture("comicsans"), new File("res/comicsans.fnt"));
+		font = new FontType(loader.loadTexture("comicsans"), new File("res/comicsans.fnt"));
 		
 		images.clear();
 		guiGraphics.clear();
 		setUpGUI(loader, guiGraphics, font);
-		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 15);
+		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 1);
 		
 		while(!Display.isCloseRequested()) {
 			camera.move();
@@ -114,7 +116,6 @@ public class Main {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 					if(gold >= goldMineCost) {
 	            		GoldMine goldMine = new GoldMine(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, goldminen.size() + 1);
-	            		System.out.println(goldminen.size());
 	            		gold -= goldMineCost;
 	            		goldminen.add(goldMine);
 	            	}
@@ -131,7 +132,7 @@ public class Main {
 		}
 	}
 	
-	//prevent activating multiple objects
+	//deavticate objects to avoid multiple objects from being active
 	public static void disableImages() {
 		for (Image image: images) { image.setClicked(false); }
 	}

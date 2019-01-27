@@ -38,6 +38,10 @@ public class Image extends Entity{
 			1, 0
 	};
 	
+	public void changeImage(String fileName) {
+		this.setModel(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))));
+	}
+	
 	public void update(MousePicker picker) {
 		if(picker.isLeftButtonDown()) {
 			if(hit(picker)) {

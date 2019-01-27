@@ -4,9 +4,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Image;
+import fonts.GUIText;
 import toolBox.MousePicker;
 
 public class GoldMine extends Image{
@@ -15,17 +17,19 @@ public class GoldMine extends Image{
 	private int maxGold = 5;
 	private int prodRate = 1;
 	private int upgradeCost = 10;
+	private int level = 1;
 
 	public int ID;
 	
 	public GoldMine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super("Goldmine", position, rotX, rotY, rotZ, scale);
+		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
 		this.ID = id;
 		generateGold();
 	}
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
+		//GUIText text = new GUIText("Level 1", 1, Main.font, new Vector2f(0.5f, 0.5f), 0.04f, true);
 		if(this.isClicked == true) {
 			run(picker);
 		}
@@ -65,10 +69,17 @@ public class GoldMine extends Image{
 	}
 	
 	public void upgrade() {
-		maxGold += 10;
-		prodRate++;
-		Main.gold -= upgradeCost;
-		upgradeCost *= 2;
+		if(level < 5) {
+			level++;
+			if(level == 2) { this.changeImage("Goldmine_2"); }
+			else if(level == 3) { this.changeImage("Goldmine_3"); }
+			else if(level == 4) { this.changeImage("Goldmine_4"); }
+			else if(level == 5) { this.changeImage("Goldmine_5"); }
+			maxGold += 10;
+			prodRate++;
+			Main.gold -= upgradeCost;
+			upgradeCost *= 2;
+		} else { System.out.println("Goldmine Nr " + ID + " ist auf Maximallevel!"); }
 	}
 
 }
