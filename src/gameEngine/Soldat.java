@@ -27,7 +27,7 @@ public class Soldat extends Image{
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_M) { this.setLocationSet(false); }
-				else if(Keyboard.getEventKey() == Keyboard.KEY_U) { System.out.println("Kaserne upgraded"); }
+				else if(Keyboard.getEventKey() == Keyboard.KEY_U) { System.out.println("Soldat upgraded"); }
 			}
 		}
 	}

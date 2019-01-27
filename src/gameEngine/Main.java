@@ -17,10 +17,12 @@ import fonts.GUIText;
 import fonts.TextMaster;
 import guis.GUIRenderer;
 import guis.GUITexture;
+import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.Renderer;
 import shaders.StaticShader;
+import textures.ModelTexture;
 import toolBox.MousePicker;
 
 public class Main {
@@ -29,7 +31,10 @@ public class Main {
 	static int goldMineCost = 10;
 	static int kaserneCost = 30;
 	
-	static List<Entity> entities = new ArrayList<Entity>();
+	public static List<Image> images = new ArrayList<Image>();
+	static List<GoldMine> goldminen = new ArrayList<GoldMine>();
+	static List<Kaserne> kasernen = new ArrayList<Kaserne>();
+	static List<Soldat> soldaten = new ArrayList<Soldat>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -44,10 +49,10 @@ public class Main {
 		TextMaster.init(loader);
 		FontType font = new FontType(loader.loadTexture("comicsans"), new File("res/comicsans.fnt"));
 		
-		entities.clear();
+		images.clear();
 		guiGraphics.clear();
-		setUpGraphics(shader, renderer, entities);
 		setUpGUI(loader, guiGraphics, font);
+		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 15);
 		
 		while(!Display.isCloseRequested()) {
 			camera.move();
@@ -56,9 +61,8 @@ public class Main {
 			shader.start();
 			shader.loadViewMatrix(camera);
 			
-			for(Entity entity: entities) {
-				renderer.render(entity, shader);
-			}
+			renderer.render(background, shader);
+			for(Image image: images) { renderer.render(image, shader); }
 			
 			renderGUI(font, guiRenderer, guiGraphics);
 			updateGame(picker);
@@ -73,12 +77,6 @@ public class Main {
 		
 		DisplayManager.exitDisplay();
 		System.exit(0);
-	}
-	
-	//initialize all used objects
-	public static void setUpGraphics(StaticShader shader, Renderer renderer, List<Entity> entities) {
-		Entity background = new Image("grass2", new Vector3f(0, 0, -11), 0, 0, 0, 15);
-		entities.add(background);
 	}
 	
 	//initialize GUI
@@ -102,48 +100,35 @@ public class Main {
 	//process game logic
 	public static void updateGame(MousePicker picker) {
 		
-		GoldMine goldmine = null;
-		Kaserne kaserne = null;
-		Soldat soldat = null;
-		for(int i = 0; i < entities.size(); i++) {
-			if(entities.get(i) instanceof GoldMine) {
-				goldmine = (GoldMine) entities.get(i);
-			} else if(entities.get(i) instanceof Kaserne) {
-				kaserne = (Kaserne) entities.get(i);
-			} else if(entities.get(i) instanceof Soldat) {
-				soldat = (Soldat) entities.get(i);
-			}
-		}
-		
-		if(goldmine != null) {
-			goldmine.update(picker);
-		}
-		if(soldat != null) {
-			soldat.update(picker);
-		}
-		if(kaserne != null) {
-			kaserne.update(picker);
-		}
+		for(GoldMine goldmine: goldminen) { goldmine.update(picker); }
+		for(Kaserne kaserne: kasernen) { kaserne.update(picker); }
+		for(Soldat soldat: soldaten) { soldat.update(picker); }
 		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 					if(gold >= goldMineCost) {
-	            		GoldMine goldMine1 = new GoldMine(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, 1);
+	            		GoldMine goldMine = new GoldMine(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, goldminen.size() + 1);
+	            		System.out.println(goldminen.size());
 	            		gold -= goldMineCost;
-	            		entities.add(goldMine1);
+	            		goldminen.add(goldMine);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
 	            	if(gold >= kaserneCost) {
-	            		Kaserne kaserne1 = new Kaserne(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, 1);
+	            		Kaserne kaserne = new Kaserne(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, kasernen.size() + 1);
 	            		gold -= kaserneCost;
-	            		entities.add(kaserne1);
+	            		kasernen.add(kaserne);
 	            	}
 	            }
 	        } else {
 	        
 	        }
 		}
+	}
+	
+	//prevent activating multiple objects
+	public static void disableImages() {
+		for (Image image: images) { image.setClicked(false); }
 	}
 	
 }

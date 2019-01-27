@@ -24,13 +24,13 @@ public class Camera {
 			position.y -= 0.02f;
 		}
 		
-		int DWheel = Mouse.getDWheel();
+		/*int DWheel = Mouse.getDWheel();
 		if(DWheel < 0) {
 			position.z += 0.2f;
 		}if(DWheel > 0) {
 			position.z -= 0.2f;
 		}
-
+		 */
 	}
 	public Vector3f getPosition() {
 		return position;

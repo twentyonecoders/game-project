@@ -34,8 +34,8 @@ public class Kaserne extends Image{
 	}
 		
 	public void buySoldier() {
-		Soldat soldat = new Soldat(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, 1);
-		Main.entities.add(soldat);
+		Soldat soldat = new Soldat(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, Main.soldaten.size() + 1);
+		Main.soldaten.add(soldat);
 		Main.gold -= 10;
 	}
 
