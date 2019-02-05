@@ -30,13 +30,13 @@ public class Main {
 	public static FontType font;
 	
 	public static int gold = 100;
-	static int goldMineCost = 10;
-	static int kaserneCost = 30;
+	static int gmCost = 50;
+	static int baCost = 80;
 	
 	public static List<Image> images = new ArrayList<Image>();
-	static List<GoldMine> goldminen = new ArrayList<GoldMine>();
-	static List<Kaserne> kasernen = new ArrayList<Kaserne>();
-	static List<Soldat> soldaten = new ArrayList<Soldat>();
+	static List<Goldmine> goldmines = new ArrayList<Goldmine>();
+	static List<Barrack> kasernen = new ArrayList<Barrack>();
+	static List<Soldier> soldiers = new ArrayList<Soldier>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -44,9 +44,9 @@ public class Main {
 		
 		Loader loader = new Loader();
 		StaticShader shader = new StaticShader();
-		Renderer renderer = new Renderer(shader);
+		Renderer renderer = new Renderer();
 		Camera camera = new Camera();
-		MousePicker picker = new MousePicker(renderer.getProjectionMatrix(), camera);
+		MousePicker picker = new MousePicker(camera);
 		GUIRenderer guiRenderer = new GUIRenderer(loader);
 		TextMaster.init(loader);
 		font = new FontType(loader.loadTexture("comicsans"), new File("res/comicsans.fnt"));
@@ -54,10 +54,11 @@ public class Main {
 		images.clear();
 		guiGraphics.clear();
 		setUpGUI(loader, guiGraphics, font);
-		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, -11), 0, 0, 0, 10);
+		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), 
+				new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, 1), 0, 0, 0, 1);
 		
 		while(!Display.isCloseRequested()) {
-			//camera.move();
+			camera.move(picker);
 			picker.update();
 			renderer.prepare();
 			shader.start();
@@ -91,12 +92,14 @@ public class Main {
 		guis.add(guiKaserneBack);
 		guis.add(guiGoldMine);
 		guis.add(guiKaserne);
-		GUIText goldMineCost = new GUIText("Cost : 10 Gold", 1.5f, font, new Vector2f(0.03f, 0.95f), 0.15f, true);
-		GUIText kaserneCost = new GUIText("Cost : 30 Gold", 1.5f, font, new Vector2f(0.2f, 0.95f), 0.15f, true);
-		goldMineCost.setColour(255, 255, 0);
-		kaserneCost.setColour(255, 255, 0);
+		GUIText goldMineCostText = new GUIText("Cost : " + gmCost + " Gold", 1.5f, font, new Vector2f(0.03f, 0.95f), 0.15f, true);
+		GUIText kaserneCostText = new GUIText("Cost : " + baCost + " Gold", 1.5f, font, new Vector2f(0.2f, 0.95f), 0.15f, true);
+		goldMineCostText.setColour(255, 255, 0);
+		kaserneCostText.setColour(255, 255, 0);
 		GUIText goldMineText = new GUIText("Press 'G'", 1.5f, font, new Vector2f(0.03f, 0.9f), 0.15f, true);
 		GUIText kaserneText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.2f, 0.9f), 0.15f, true);
+		goldMineText.setColour(0, 0, 0);
+		kaserneText.setColour(0, 0, 0);
 	}
 	
 	//render GUI
@@ -111,23 +114,23 @@ public class Main {
 	//process game logic
 	public static void updateGame(MousePicker picker) {
 		
-		for(GoldMine goldmine: goldminen) { goldmine.update(picker); }
-		for(Kaserne kaserne: kasernen) { kaserne.update(picker); }
-		for(Soldat soldat: soldaten) { soldat.update(picker); }
+		for(Goldmine goldmine: goldmines) { goldmine.update(picker); }
+		for(Barrack barrack: kasernen) { barrack.update(picker); }
+		for(Soldier soldier: soldiers) { soldier.update(picker); }
 		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
-					if(gold >= goldMineCost) {
-	            		GoldMine goldMine = new GoldMine(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, goldminen.size() + 1);
-	            		gold -= goldMineCost;
-	            		goldminen.add(goldMine);
+					if(gold >= gmCost) {
+	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, goldmines.size() + 1);
+	            		gold -= gmCost;
+	            		goldmines.add(goldmine);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
-	            	if(gold >= kaserneCost) {
-	            		Kaserne kaserne = new Kaserne(new Vector3f(0, 0, -10), 0, 0, 0, 0.5f, kasernen.size() + 1);
-	            		gold -= kaserneCost;
-	            		kasernen.add(kaserne);
+	            	if(gold >= baCost) {
+	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, kasernen.size() + 1);
+	            		gold -= baCost;
+	            		kasernen.add(barrack);
 	            	}
 	            }
 	        } else {

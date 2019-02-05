@@ -14,13 +14,10 @@ import toolBox.Maths;
 
 public class Renderer {
 	
-	private Matrix4f projectionMatrix;
-	
-	public Renderer(StaticShader shader) {
-		this.projectionMatrix = Maths.createProjectionMatrix();
-		shader.start();
-		shader.loadProjectionMatrix(projectionMatrix);
-		shader.stop();
+	public void prepare() {
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClearColor(1, 0, 0, 1);
 	}
 	
 	public void render(Entity entity, StaticShader shader) {
@@ -42,16 +39,6 @@ public class Renderer {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
-	}
-	
-	public void prepare() {
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(0, 0.3f, 0.0f, 1);
-	}
-
-	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
 	}
 	
 }

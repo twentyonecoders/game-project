@@ -1,8 +1,9 @@
 package entities;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
+
+import toolBox.MousePicker;
 
 public class Camera {
 
@@ -11,27 +12,22 @@ public class Camera {
 	private float yaw;
 	private float roll;
 	
-	public Camera() {}
-	
-	public void move() {
+	public void move(MousePicker picker) {
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			position.x -= 0.02f;
+			picker.dx -= 0.02f;
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			position.x += 0.02f;
+			picker.dx += 0.02f;
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			position.y += 0.02f;
+			picker.dy += 0.02f;
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			position.y -= 0.02f;
+			picker.dy -= 0.02f;
 		}
-		
-		/*int DWheel = Mouse.getDWheel();
-		if(DWheel < 0) {
-			position.z += 0.2f;
-		}if(DWheel > 0) {
-			position.z -= 0.2f;
-		}
-		 */
 	}
+	
 	public Vector3f getPosition() {
 		return position;
 	}

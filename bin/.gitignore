@@ -1,9 +1,6 @@
+/toolBox/
 /entities/
-/fonts/
 /gameEngine/
-/guis/
-/models/
 /renderEngine/
 /shaders/
-/textures/
-/toolBox/
+/fonts/

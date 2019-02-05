@@ -28,11 +28,11 @@ public class Image extends Entity{
 	}
 	
 	public static float[] vertices = {
-		    -1f, 1f, 0f,   //v0
-		    -1f, -1f, 0f,  //v1
-		    1f, -1f, 0f,   //v2
-		    1f, 1f, 0f     //v3
-		  };
+			-1, 1.6f, 0,
+			-1, -1.6f, 0,
+			1, -1.6f, 0,
+			1, 1.6f, 0
+	};
 	
 	public static int[] indices = {
 			0, 1, 3,
@@ -63,7 +63,7 @@ public class Image extends Entity{
 			setClicked(false);
 		}
 		if(!this.isLocationSet()) {
-			setPosition(new Vector3f(picker.getCurrentRay().x * 10f, picker.getCurrentRay().y * 10f, -10f));
+			setPosition(picker.getCurrentRay());
 			if(picker.isLeftButtonDown()) {
 				setLocationSet(true);
 			}
@@ -83,10 +83,10 @@ public class Image extends Entity{
 	}
 	
 	private boolean hit(MousePicker picker) {
-		if(picker.getCurrentRay().x * 10 <= getPosition().x + 0.5f &&
-				picker.getCurrentRay().x * 10 >= getPosition().x - 0.5f &&
-				picker.getCurrentRay().y * 10 <= getPosition().y + 0.5f &&
-				picker.getCurrentRay().y * 10 >= getPosition().y - 0.5f) {
+		if(picker.getCurrentRay().x <= getPosition().x + 0.125f &&
+				picker.getCurrentRay().x >= getPosition().x - 0.125f &&
+				picker.getCurrentRay().y <= getPosition().y + 0.2f &&
+				picker.getCurrentRay().y >= getPosition().y - 0.2f) {
 			return true;
 		} else {
 			return false;
@@ -95,12 +95,12 @@ public class Image extends Entity{
 
 	public void setClicked(boolean isClicked) {
 		if(isClicked == false) {
-			setScale(0.5f);
+			setScale(0.125f);
 			setLocationSet(true);
 			this.isClicked = isClicked;
 		} else if(isClicked == true) {
 			Main.disableImages();
-			setScale(0.6f);
+			setScale(0.15f);
 			this.isClicked = isClicked;
 		}
 	}
