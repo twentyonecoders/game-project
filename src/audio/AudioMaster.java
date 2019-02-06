@@ -11,6 +11,7 @@ import org.lwjgl.util.WaveData;
 public class AudioMaster {
 
 	private static List<Integer> buffers = new ArrayList<Integer>();
+	public static List<Source> sources = new ArrayList<Source>();
 	
 	public static void init() {
 		try {
@@ -37,6 +38,9 @@ public class AudioMaster {
 	public static void cleanUp() {
 		for(int buffer: buffers) {
 			AL10.alDeleteBuffers(buffer);
+		}
+		for(Source source: sources) {
+			source.delete();
 		}
 		AL.destroy();
 	}

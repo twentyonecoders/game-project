@@ -12,8 +12,6 @@ public class Source {
 		AL10.alSourcef(sourceID, AL10.AL_PITCH, 1);
 		AL10.alSource3f(sourceID, AL10.AL_POSITION, 0, 0, 0);	
 		AL10.alSourcef(sourceID, AL10.AL_ROLLOFF_FACTOR, 10);
-		AL10.alSourcef(sourceID, AL10.AL_REFERENCE_DISTANCE, 6);
-		AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, 50);
 	}
 	
 	public void play(int buffer) {

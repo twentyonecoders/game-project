@@ -1,11 +1,11 @@
-package gameEngine;
+package entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Image;
 import fonts.GUIText;
+import gameEngine.Main;
 import toolBox.MousePicker;
 
 public class Barrack extends Image{

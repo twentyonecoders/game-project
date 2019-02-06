@@ -1,9 +1,8 @@
-package gameEngine;
+package entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Image;
 import toolBox.MousePicker;
 
 public class Soldier extends Image{

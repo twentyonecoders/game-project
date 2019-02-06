@@ -1,4 +1,4 @@
-package gameEngine;
+package entities;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,11 +9,15 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
 import audio.Source;
-import entities.Image;
 import fonts.GUIText;
+import gameEngine.Main;
 import toolBox.MousePicker;
 
 public class Goldmine extends Image{
+	
+	Source source = new Source();
+	private int collectBuffer = AudioMaster.loadSound("audio/collect.wav");
+	private int upgradeBuffer = AudioMaster.loadSound("audio/upgrade.wav");
 	
 	public int ID;
 	
@@ -23,21 +27,16 @@ public class Goldmine extends Image{
 	private int upgradeCost = 10;
 	private int level = 1;
 	
-	Source source = new Source();
-	private int buffer = AudioMaster.loadSound("audio/bounce.wav");
-	
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
 		ID = id;
 		generateGold();
-		source.play(buffer);
+		AudioMaster.sources.add(source);
 	}
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
 		if(isClicked == true) {
-			if(!source.isPlaying())
-				source.play(buffer);
 			run(picker);
 			showGUI();
 		} else {
@@ -82,9 +81,11 @@ public class Goldmine extends Image{
 	private void collect() {
 		Main.gold += gold;
 		gold = 0;
+		source.play(collectBuffer);
 	}
 	
 	private void upgrade() {
+		source.play(upgradeBuffer);
 		if(level < 5 && Main.gold >= upgradeCost) {
 			level++;
 			if(level == 2) { changeImage("Goldmine_2"); }

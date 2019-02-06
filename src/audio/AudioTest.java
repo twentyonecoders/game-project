@@ -10,7 +10,6 @@ public class AudioTest {
 	public static void main(String args[]) throws IOException, InterruptedException {
 		AudioMaster.init();
 		AudioMaster.setListenerData(0, 0, 0);
-		AL10.alDistanceModel(AL10.AL_INVERSE_DISTANCE_CLAMPED);
 		
 		int buffer = AudioMaster.loadSound("audio/bounce.wav");
 		Source source = new Source();

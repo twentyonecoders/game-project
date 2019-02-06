@@ -6,17 +6,22 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import audio.AudioMaster;
+import audio.Source;
 import fonts.GUIText;
 import fonts.TextMaster;
 import gameEngine.Main;
+import models.ModelTexture;
 import models.TexturedModel;
 import renderEngine.Loader;
-import textures.ModelTexture;
 import toolBox.MousePicker;
 
 public class Image extends Entity{
 
 	static Loader loader = new Loader();
+	private Source source = new Source();
+	private int buildBuffer = AudioMaster.loadSound("audio/build.wav");
+	
 	public boolean isClicked;
 	public boolean locationSet = true;
 	
@@ -25,6 +30,8 @@ public class Image extends Entity{
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
+		source.play(buildBuffer);
+		AudioMaster.sources.add(source);
 	}
 	
 	public static float[] vertices = {

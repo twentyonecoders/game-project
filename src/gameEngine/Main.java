@@ -10,21 +10,23 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
-import audio.Source;
+import entities.Barrack;
 import entities.Camera;
 import entities.Entity;
+import entities.Goldmine;
 import entities.Image;
+import entities.Soldier;
 import fonts.FontType;
 import fonts.GUIText;
 import fonts.TextMaster;
 import guis.GUIRenderer;
 import guis.GUITexture;
+import models.ModelTexture;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.Renderer;
 import shaders.StaticShader;
-import textures.ModelTexture;
 import toolBox.MousePicker;
 
 public class Main {
@@ -36,9 +38,9 @@ public class Main {
 	static int baCost = 80;
 	
 	public static List<Image> images = new ArrayList<Image>();
+	public static List<Soldier> soldiers = new ArrayList<Soldier>();
 	static List<Goldmine> goldmines = new ArrayList<Goldmine>();
 	static List<Barrack> kasernen = new ArrayList<Barrack>();
-	static List<Soldier> soldiers = new ArrayList<Soldier>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -77,6 +79,7 @@ public class Main {
 			shader.stop();
 			DisplayManager.updateDisplay();
 		}
+		AudioMaster.cleanUp();
 		TextMaster.cleanUp();
 		guiRenderer.cleanUp();
 		shader.cleanUp();
