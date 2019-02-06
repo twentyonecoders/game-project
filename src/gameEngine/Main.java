@@ -9,6 +9,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import audio.AudioMaster;
+import audio.Source;
 import entities.Camera;
 import entities.Entity;
 import entities.Image;
@@ -49,6 +51,8 @@ public class Main {
 		MousePicker picker = new MousePicker(camera);
 		GUIRenderer guiRenderer = new GUIRenderer(loader);
 		TextMaster.init(loader);
+		AudioMaster.init();
+		AudioMaster.setListenerData(0, 0, 0);
 		font = new FontType(loader.loadTexture("comicsans"), new File("res/comicsans.fnt"));
 		
 		images.clear();

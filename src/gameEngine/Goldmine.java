@@ -7,29 +7,37 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import audio.AudioMaster;
+import audio.Source;
 import entities.Image;
 import fonts.GUIText;
 import toolBox.MousePicker;
 
 public class Goldmine extends Image{
 	
+	public int ID;
+	
 	private int gold = 0;
 	private int maxGold = 5;
 	private int prodRate = 1;
 	private int upgradeCost = 10;
 	private int level = 1;
-
-	public int ID;
+	
+	Source source = new Source();
+	private int buffer = AudioMaster.loadSound("audio/bounce.wav");
 	
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
 		ID = id;
 		generateGold();
+		source.play(buffer);
 	}
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
 		if(isClicked == true) {
+			if(!source.isPlaying())
+				source.play(buffer);
 			run(picker);
 			showGUI();
 		} else {
