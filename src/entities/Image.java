@@ -22,9 +22,6 @@ public class Image extends Entity{
 	private Source source = new Source();
 	private int buildBuffer = AudioMaster.loadSound("audio/build.wav");
 	
-	public boolean isClicked;
-	public boolean locationSet = true;
-	
 	public List<GUIText> texts = new ArrayList<GUIText>();
 	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -57,26 +54,6 @@ public class Image extends Entity{
 		setModel(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))));
 	}
 	
-	public void update(MousePicker picker) {
-		if(picker.isLeftButtonDown()) {
-			if(hit(picker)) {
-				setClicked(true);
-			}
-		}
-	}
-	
-	protected void run(MousePicker picker) {
-		if(picker.isRightButtonDown()) {
-			setClicked(false);
-		}
-		if(!this.isLocationSet()) {
-			setPosition(picker.getCurrentRay());
-			if(picker.isLeftButtonDown()) {
-				setLocationSet(true);
-			}
-		}
-	}
-	
 	protected void showGUI() {
 		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
 		moveText.setColour(255, 255, 255);
@@ -89,7 +66,7 @@ public class Image extends Entity{
 		}
 	}
 	
-	private boolean hit(MousePicker picker) {
+	public boolean hit(MousePicker picker) {
 		if(picker.getCurrentRay().x <= getPosition().x + 0.125f &&
 				picker.getCurrentRay().x >= getPosition().x - 0.125f &&
 				picker.getCurrentRay().y <= getPosition().y + 0.2f &&
@@ -99,25 +76,16 @@ public class Image extends Entity{
 			return false;
 		}
 	}
-
-	public void setClicked(boolean isClicked) {
-		if(isClicked == false) {
-			setScale(0.125f);
-			setLocationSet(true);
-			this.isClicked = isClicked;
-		} else if(isClicked == true) {
-			Main.disableImages();
-			setScale(0.15f);
-			this.isClicked = isClicked;
-		}
-	}
 	
-	protected boolean isLocationSet() {
-		return locationSet;
-	}
-
-	protected void setLocationSet(boolean locationSet) {
-		this.locationSet = locationSet;
+	protected boolean hit(Vector3f pos) {
+		if(pos.x <= getPosition().x + 0.25f &&
+				pos.x >= getPosition().x - 0.25f &&
+				pos.y <= getPosition().y + 0.4f &&
+				pos.y >= getPosition().y - 0.4f) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

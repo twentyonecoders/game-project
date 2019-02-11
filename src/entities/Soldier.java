@@ -16,7 +16,7 @@ public class Soldier extends Image{
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(isClicked == true) {
+		if(clicked == true) {
 			run(picker);
 		}
 	}
