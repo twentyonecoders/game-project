@@ -22,10 +22,10 @@ public class Image extends Entity{
 	private Source source = new Source();
 	private int buildBuffer = AudioMaster.loadSound("audio/build.wav");
 	
-	public boolean isClicked;
-	public boolean locationSet = true;
-	
 	public List<GUIText> texts = new ArrayList<GUIText>();
+	
+	public boolean clicked = true;
+	public boolean locationSet = false;
 	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
@@ -58,22 +58,55 @@ public class Image extends Entity{
 	}
 	
 	public void update(MousePicker picker) {
-		if(picker.isLeftButtonDown()) {
-			if(hit(picker)) {
-				setClicked(true);
+		if(!this.isLocationSet()) {
+			int collisions = 0;
+			setPosition(picker.getCurrentRay());
+			if(picker.isLeftButtonDown()) {
+				for(int i = 0; i < Main.images.size(); i++) {
+					if(hit(Main.images.get(i).getPosition())) { collisions++; }
+				}
+				if(collisions < 2) { setLocationSet(true); }
 			}
 		}
-	}
-	
-	protected void run(MousePicker picker) {
 		if(picker.isRightButtonDown()) {
 			setClicked(false);
 		}
-		if(!this.isLocationSet()) {
-			setPosition(picker.getCurrentRay());
-			if(picker.isLeftButtonDown()) {
-				setLocationSet(true);
-			}
+	}
+	
+	public void setClicked(boolean clicked) {
+		if(clicked) {
+			showGUI();
+			setScale(0.15f);
+		} else { 
+			hideGUI();
+			setScale(0.125f); 
+		}
+		this.clicked = clicked;
+	}
+	
+	public boolean isClicked() {
+		return clicked;
+	}
+	
+	public boolean hit(MousePicker picker) {
+		if(picker.getCurrentRay().x <= getPosition().x + 0.125f &&
+				picker.getCurrentRay().x >= getPosition().x - 0.125f &&
+				picker.getCurrentRay().y <= getPosition().y + 0.2f &&
+				picker.getCurrentRay().y >= getPosition().y - 0.2f) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	protected boolean hit(Vector3f pos) {
+		if(pos.x <= getPosition().x + 0.25f &&
+				pos.x >= getPosition().x - 0.25f &&
+				pos.y <= getPosition().y + 0.4f &&
+				pos.y >= getPosition().y - 0.4f) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -88,30 +121,7 @@ public class Image extends Entity{
 			TextMaster.removeText(text);
 		}
 	}
-	
-	private boolean hit(MousePicker picker) {
-		if(picker.getCurrentRay().x <= getPosition().x + 0.125f &&
-				picker.getCurrentRay().x >= getPosition().x - 0.125f &&
-				picker.getCurrentRay().y <= getPosition().y + 0.2f &&
-				picker.getCurrentRay().y >= getPosition().y - 0.2f) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	public void setClicked(boolean isClicked) {
-		if(isClicked == false) {
-			setScale(0.125f);
-			setLocationSet(true);
-			this.isClicked = isClicked;
-		} else if(isClicked == true) {
-			Main.disableImages();
-			setScale(0.15f);
-			this.isClicked = isClicked;
-		}
-	}
-	
 	protected boolean isLocationSet() {
 		return locationSet;
 	}
@@ -119,5 +129,4 @@ public class Image extends Entity{
 	protected void setLocationSet(boolean locationSet) {
 		this.locationSet = locationSet;
 	}
-
 }

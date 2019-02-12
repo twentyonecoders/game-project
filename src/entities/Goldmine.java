@@ -22,7 +22,7 @@ public class Goldmine extends Image{
 	public int ID;
 	
 	private int gold = 0;
-	private int maxGold = 5;
+	private int maxGold = 10;
 	private int prodRate = 1;
 	private int upgradeCost = 10;
 	private int level = 1;
@@ -36,16 +36,6 @@ public class Goldmine extends Image{
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(isClicked == true) {
-			run(picker);
-			showGUI();
-		} else {
-			hideGUI();
-		}
-	}
-	
-	protected void run(MousePicker picker) {
-		super.run(picker);
 		if(picker.isLeftButtonDown()) {
 			collect();
 		}
@@ -60,8 +50,10 @@ public class Goldmine extends Image{
 	protected void showGUI() {
 		super.showGUI();
 		GUIText upgradeText = new GUIText("Press 'U' to upgrade (" + upgradeCost + " Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
+		GUIText Text = new GUIText("ID : " + ID, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
 		upgradeText.setColour(255, 255, 255);
 		texts.add(upgradeText);
+		texts.add(Text);
 	}
 	
 	private void generateGold(){
@@ -70,9 +62,9 @@ public class Goldmine extends Image{
 			public void run() {
 				if (gold <= maxGold - 1) {
 					gold += prodRate;
-					System.out.println("Goldmine Nr " + ID + " has : " + gold + " Gold");
+					//System.out.println("Goldmine Nr " + ID + " has : " + gold + " Gold");
 				} else {
-					System.out.println("Goldmine Nr " + ID + " is full!");
+					//System.out.println("Goldmine Nr " + ID + " is full!");
 				}
 		    }
 		}, 1*1000, 1*1000);
@@ -99,5 +91,4 @@ public class Goldmine extends Image{
 			hideGUI();
 		} else { System.out.println("Goldmine Nr " + ID + " has reached the maximum level!"); }
 	}
-
 }

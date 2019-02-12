@@ -33,14 +33,14 @@ public class Main {
 
 	public static FontType font;
 	
-	public static int gold = 100;
+	public static int gold = 1000;
 	static int gmCost = 50;
 	static int baCost = 80;
 	
 	public static List<Image> images = new ArrayList<Image>();
 	public static List<Soldier> soldiers = new ArrayList<Soldier>();
-	static List<Goldmine> goldmines = new ArrayList<Goldmine>();
-	static List<Barrack> kasernen = new ArrayList<Barrack>();
+	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
+	public static List<Barrack> barracks = new ArrayList<Barrack>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -121,34 +121,61 @@ public class Main {
 	//process game logic
 	public static void updateGame(MousePicker picker) {
 		
-		for(Goldmine goldmine: goldmines) { goldmine.update(picker); }
-		for(Barrack barrack: kasernen) { barrack.update(picker); }
-		for(Soldier soldier: soldiers) { soldier.update(picker); }
+		int counter = 0;
+		for(Image image: images) {
+			if(image.isClicked()) {
+				counter++;
+			}
+		}
+		if(counter == 0) {
+			for(Image image: images) {
+				if(picker.isLeftButtonDown() && image.hit(picker)) {
+					image.setClicked(true);
+				}
+			}
+		}
+		if(counter == 1) {
+			for(Goldmine goldmine: goldmines) { 
+				if(goldmine.isClicked()) {
+					goldmine.update(picker);
+				}
+			}
+			for(Barrack barrack: barracks) {
+				if(barrack.isClicked()) {
+					barrack.update(picker);
+				}
+			}
+			for(Soldier soldier: soldiers) {
+				if(soldier.isClicked()) {
+					soldier.update(picker);
+				}
+			}
+		}
 		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 					if(gold >= gmCost) {
-	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, goldmines.size() + 1);
+	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, goldmines.size());
 	            		gold -= gmCost;
 	            		goldmines.add(goldmine);
-	            	}
+	            		System.out.println("nr " + (goldmines.size() - 1) + " in list");
+					}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
 	            	if(gold >= baCost) {
-	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, kasernen.size() + 1);
+	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, barracks.size());
 	            		gold -= baCost;
-	            		kasernen.add(barrack);
+	            		barracks.add(barrack);
+	            		System.out.println("nr " + (barracks.size() - 1) + " in list");
 	            	}
 	            }
-	        } else {
-	        
-	        }
+			}
 		}
 	}
 	
 	//deavticate objects to avoid multiple objects from being active
 	public static void disableImages() {
-		for (Image image: images) { image.setClicked(false); }
+		for(Image image: images) { image.setClicked(false); }
 	}
 	
 }
