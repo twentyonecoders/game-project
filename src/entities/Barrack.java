@@ -4,8 +4,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.AudioMaster;
-import audio.Source;
 import fonts.GUIText;
 import gameEngine.Main;
 import toolBox.MousePicker;
