@@ -3,6 +3,9 @@ package gameEngine;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -16,6 +19,7 @@ import entities.Entity;
 import entities.Goldmine;
 import entities.Image;
 import entities.Soldier;
+import entities.Zombie;
 import fonts.FontType;
 import fonts.GUIText;
 import fonts.TextMaster;
@@ -36,11 +40,15 @@ public class Main {
 	public static int gold = 1000;
 	static int gmCost = 50;
 	static int baCost = 80;
+	static boolean canSpawn = false;
+	
+	static int updateRate = 0;
 	
 	public static List<Image> images = new ArrayList<Image>();
-	public static List<Soldier> soldiers = new ArrayList<Soldier>();
 	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
 	public static List<Barrack> barracks = new ArrayList<Barrack>();
+	public static List<Soldier> soldiers = new ArrayList<Soldier>();
+	public static List<Zombie> zombies = new ArrayList<Zombie>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -62,19 +70,27 @@ public class Main {
 		setUpGUI(loader, guiGraphics, font);
 		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), 
 				new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, 1), 0, 0, 0, 1);
+
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				canSpawn = true;
+			}
+		}, 1*1000, 1*3000);
 		
 		while(!Display.isCloseRequested()) {
 			camera.move(picker);
 			picker.update();
+			updateGame(picker);
+			if(canSpawn) { spawnEnemy(); }
+			
 			renderer.prepare();
 			shader.start();
 			shader.loadViewMatrix(camera);
 			
 			renderer.render(background, shader);
 			for(Image image: images) { renderer.render(image, shader); }
-			
 			renderGUI(font, guiRenderer, guiGraphics);
-			updateGame(picker);
 			
 			shader.stop();
 			DisplayManager.updateDisplay();
@@ -117,6 +133,16 @@ public class Main {
 		TextMaster.render();
 		TextMaster.removeText(text);
 	}
+
+	public static void spawnEnemy() {
+		Random random = new Random();
+		float x = -0.8f + random.nextFloat() * (-0.8f + 0.6f);
+		float y = -0.5f + random.nextFloat() * (0.8f + 0.8f);
+		Zombie zombie = new Zombie(new Vector3f(x, y, 1), 0, 0, 0, 0.075f, zombies.size());
+		zombie.setClicked(false);
+		zombies.add(zombie);
+		canSpawn = false;
+	}
 	
 	//process game logic
 	public static void updateGame(MousePicker picker) {
@@ -152,6 +178,11 @@ public class Main {
 			}
 		}
 		
+		if(updateRate == 60) {
+			for(Zombie zombie: zombies) { zombie.update(picker);}
+			updateRate = 0;
+		}
+		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
@@ -159,18 +190,17 @@ public class Main {
 	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, goldmines.size());
 	            		gold -= gmCost;
 	            		goldmines.add(goldmine);
-	            		System.out.println("nr " + (goldmines.size() - 1) + " in list");
-					}
+	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
 	            	if(gold >= baCost) {
 	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
 	            		gold -= baCost;
 	            		barracks.add(barrack);
-	            		System.out.println("nr " + (barracks.size() - 1) + " in list");
 	            	}
 	            }
 			}
 		}
+		updateRate++;
 	}
 	
 	//deavticate objects to avoid multiple objects from being active
