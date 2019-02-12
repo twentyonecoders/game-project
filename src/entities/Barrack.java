@@ -21,7 +21,7 @@ public class Barrack extends Image{
 		super.update(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_1) { System.out.println("bought soldier"); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_1) { buySoldier(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
@@ -29,14 +29,15 @@ public class Barrack extends Image{
 	
 	protected void showGUI() {
 		super.showGUI();
-		GUIText upgradeText = new GUIText("Press '1' to buy soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
+		GUIText soldierText = new GUIText("Press '1' to buy soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
 		GUIText Text = new GUIText("ID : " + ID, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
-		upgradeText.setColour(255, 255, 255);
-		texts.add(upgradeText);
+		soldierText.setColour(255, 255, 255);
+		texts.add(soldierText);
 		texts.add(Text);
 	}
 		
 	private void buySoldier() {
+		Main.disableImages();
 		Soldier soldat = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, Main.soldiers.size() + 1);
 		Main.soldiers.add(soldat);
 		Main.gold -= 10;

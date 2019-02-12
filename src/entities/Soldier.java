@@ -1,8 +1,11 @@
 package entities;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import fonts.GUIText;
+import gameEngine.Main;
 import toolBox.MousePicker;
 
 public class Soldier extends Image{
@@ -16,18 +19,16 @@ public class Soldier extends Image{
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(clicked == true) {
-			run(picker);
-		}
-	}
-	
-	protected void run(MousePicker picker) {
-		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
-				else if(Keyboard.getEventKey() == Keyboard.KEY_U) { System.out.println("Soldier upgraded"); }
 			}
 		}
+	}
+	
+	protected void showGUI() {
+		super.showGUI();
+		GUIText Text = new GUIText("ID : " + ID, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
+		texts.add(Text);
 	}
 }

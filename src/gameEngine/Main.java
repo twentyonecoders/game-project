@@ -122,7 +122,6 @@ public class Main {
 	public static void updateGame(MousePicker picker) {
 		
 		int counter = 0;
-		System.out.println(counter);
 		for(Image image: images) {
 			if(image.isClicked()) {
 				counter++;
@@ -139,13 +138,16 @@ public class Main {
 			for(Goldmine goldmine: goldmines) { 
 				if(goldmine.isClicked()) {
 					goldmine.update(picker);
-					System.out.println("updating goldmine nr : " + goldmine.ID);
 				}
 			}
 			for(Barrack barrack: barracks) {
 				if(barrack.isClicked()) {
 					barrack.update(picker);
-					System.out.println("updating goldmine nr : " + barrack.ID);
+				}
+			}
+			for(Soldier soldier: soldiers) {
+				if(soldier.isClicked()) {
+					soldier.update(picker);
 				}
 			}
 		}
