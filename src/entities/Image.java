@@ -76,10 +76,10 @@ public class Image extends Entity{
 	public void setClicked(boolean clicked) {
 		if(clicked) {
 			showGUI();
-			setScale(0.15f);
+			setScale(0.08f);
 		} else { 
 			hideGUI();
-			setScale(0.125f); 
+			setScale(0.075f); 
 		}
 		this.clicked = clicked;
 	}
@@ -89,10 +89,10 @@ public class Image extends Entity{
 	}
 	
 	public boolean hit(MousePicker picker) {
-		if(picker.getCurrentRay().x <= getPosition().x + 0.125f &&
-				picker.getCurrentRay().x >= getPosition().x - 0.125f &&
-				picker.getCurrentRay().y <= getPosition().y + 0.2f &&
-				picker.getCurrentRay().y >= getPosition().y - 0.2f) {
+		if(picker.getCurrentRay().x <= getPosition().x + 0.075f &&
+				picker.getCurrentRay().x >= getPosition().x - 0.075f &&
+				picker.getCurrentRay().y <= getPosition().y + 0.12f &&
+				picker.getCurrentRay().y >= getPosition().y - 0.12f) {
 			return true;
 		} else {
 			return false;
@@ -100,10 +100,10 @@ public class Image extends Entity{
 	}
 	
 	protected boolean hit(Vector3f pos) {
-		if(pos.x <= getPosition().x + 0.25f &&
-				pos.x >= getPosition().x - 0.25f &&
-				pos.y <= getPosition().y + 0.4f &&
-				pos.y >= getPosition().y - 0.4f) {
+		if(pos.x <= getPosition().x + 0.15f &&
+				pos.x >= getPosition().x - 0.15f &&
+				pos.y <= getPosition().y + 0.24f &&
+				pos.y >= getPosition().y - 0.24f) {
 			return true;
 		} else {
 			return false;

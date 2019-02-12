@@ -156,14 +156,14 @@ public class Main {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 					if(gold >= gmCost) {
-	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, goldmines.size());
+	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, goldmines.size());
 	            		gold -= gmCost;
 	            		goldmines.add(goldmine);
 	            		System.out.println("nr " + (goldmines.size() - 1) + " in list");
 					}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
 	            	if(gold >= baCost) {
-	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, barracks.size());
+	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
 	            		gold -= baCost;
 	            		barracks.add(barrack);
 	            		System.out.println("nr " + (barracks.size() - 1) + " in list");

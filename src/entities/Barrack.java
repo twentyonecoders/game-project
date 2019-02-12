@@ -38,7 +38,7 @@ public class Barrack extends Image{
 		
 	private void buySoldier() {
 		Main.disableImages();
-		Soldier soldat = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, Main.soldiers.size() + 1);
+		Soldier soldat = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, Main.soldiers.size());
 		Main.soldiers.add(soldat);
 		Main.gold -= 10;
 	}
