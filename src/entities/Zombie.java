@@ -2,8 +2,6 @@ package entities;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import toolBox.MousePicker;
-
 public class Zombie extends Image{
 
 	public int ID;
@@ -13,7 +11,15 @@ public class Zombie extends Image{
 		this.ID = id;
 	}
 	
-	public void update(MousePicker picker) {
-		increasePosition(0.01f, 0, 0);
+	public void update(Vector3f target) {
+		increasePosition(calculateDirection(target).x / 10, calculateDirection(target).y / 10, 0);
+	}
+	
+	public Vector3f calculateDirection(Vector3f target) {
+		Vector3f direction = new Vector3f();
+		Vector3f.sub(target, position, direction);
+		//direction.set(direction.x / 10);
+		//float distance = direction.length();
+		return direction;
 	}
 }

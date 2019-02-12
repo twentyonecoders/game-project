@@ -179,7 +179,11 @@ public class Main {
 		}
 		
 		if(updateRate == 60) {
-			for(Zombie zombie: zombies) { zombie.update(picker);}
+			if(!goldmines.isEmpty()) {
+				for(Zombie zombie: zombies) { 
+					zombie.update(goldmines.get(0).getPosition());
+				}
+			}
 			updateRate = 0;
 		}
 		
