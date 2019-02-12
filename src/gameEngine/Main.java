@@ -122,39 +122,33 @@ public class Main {
 	public static void updateGame(MousePicker picker) {
 		
 		int counter = 0;
-		for(Goldmine goldmine: goldmines) { 
-			if(goldmine.isClicked()) {
-				counter++;
-			}
-		}
-		for(Barrack barrack: barracks) { 
-			if(barrack.isClicked()) {
-				counter++;
-			}
-		}
 		System.out.println(counter);
-		
-		if(counter == 0) {
-			for(Goldmine goldmine: goldmines) { 
-				if(picker.isLeftButtonDown() && goldmine.hit(picker)) {
-					goldmine.setClicked(true);
-				}
-			}
-			if(counter == 0) {
-				for(Barrack barrack: barracks) { 
-					if(picker.isLeftButtonDown() && barrack.hit(picker)) {
-						barrack.setClicked(true);
-					}
-				}
-			}
-		} else if(counter == 1) {
-			for(Goldmine goldmine: goldmines) { 
-				goldmine.update(picker);
+		for(Image image: images) {
+			if(image.isClicked()) {
+				counter++;
 			}
 		}
-		
-		//for(Barrack barrack: barracks) { barrack.update(picker); }
-		//for(Soldier soldier: soldiers) { soldier.update(picker); }
+		if(counter == 0) {
+			for(Image image: images) {
+				if(picker.isLeftButtonDown() && image.hit(picker)) {
+					image.setClicked(true);
+				}
+			}
+		}
+		if(counter == 1) {
+			for(Goldmine goldmine: goldmines) { 
+				if(goldmine.isClicked()) {
+					goldmine.update(picker);
+					System.out.println("updating goldmine nr : " + goldmine.ID);
+				}
+			}
+			for(Barrack barrack: barracks) {
+				if(barrack.isClicked()) {
+					barrack.update(picker);
+					System.out.println("updating goldmine nr : " + barrack.ID);
+				}
+			}
+		}
 		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
@@ -167,22 +161,19 @@ public class Main {
 					}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
 	            	if(gold >= baCost) {
-	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, barracks.size() + 1);
+	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.125f, barracks.size());
 	            		gold -= baCost;
 	            		barracks.add(barrack);
 	            		System.out.println("nr " + (barracks.size() - 1) + " in list");
 	            	}
 	            }
-	        } else {
-	        
-	        }
+			}
 		}
 	}
 	
 	//deavticate objects to avoid multiple objects from being active
 	public static void disableImages() {
-		for(Goldmine goldmine: goldmines) { goldmine.setClicked(false); }
-		//for (Image image: images) { image.setClicked(false); }
+		for(Image image: images) { image.setClicked(false); }
 	}
 	
 }

@@ -24,6 +24,9 @@ public class Image extends Entity{
 	
 	public List<GUIText> texts = new ArrayList<GUIText>();
 	
+	public boolean clicked = true;
+	public boolean locationSet = false;
+	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
@@ -54,16 +57,35 @@ public class Image extends Entity{
 		setModel(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))));
 	}
 	
-	protected void showGUI() {
-		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
-		moveText.setColour(255, 255, 255);
-		texts.add(moveText);
+	public void update(MousePicker picker) {
+		if(!this.isLocationSet()) {
+			int collisions = 0;
+			setPosition(picker.getCurrentRay());
+			if(picker.isLeftButtonDown()) {
+				for(int i = 0; i < Main.images.size(); i++) {
+					if(hit(Main.images.get(i).getPosition())) { collisions++; }
+				}
+				if(collisions < 2) { setLocationSet(true); }
+			}
+		}
+		if(picker.isRightButtonDown()) {
+			setClicked(false);
+		}
 	}
 	
-	protected void hideGUI() {
-		for(GUIText text: texts) {
-			TextMaster.removeText(text);
+	public void setClicked(boolean clicked) {
+		if(clicked) {
+			showGUI();
+			setScale(0.15f);
+		} else { 
+			hideGUI();
+			setScale(0.125f); 
 		}
+		this.clicked = clicked;
+	}
+	
+	public boolean isClicked() {
+		return clicked;
 	}
 	
 	public boolean hit(MousePicker picker) {
@@ -87,5 +109,24 @@ public class Image extends Entity{
 			return false;
 		}
 	}
+	
+	protected void showGUI() {
+		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
+		moveText.setColour(255, 255, 255);
+		texts.add(moveText);
+	}
+	
+	protected void hideGUI() {
+		for(GUIText text: texts) {
+			TextMaster.removeText(text);
+		}
+	}
 
+	protected boolean isLocationSet() {
+		return locationSet;
+	}
+
+	protected void setLocationSet(boolean locationSet) {
+		this.locationSet = locationSet;
+	}
 }

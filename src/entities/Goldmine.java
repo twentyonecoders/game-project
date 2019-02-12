@@ -22,13 +22,10 @@ public class Goldmine extends Image{
 	public int ID;
 	
 	private int gold = 0;
-	private int maxGold = 5;
+	private int maxGold = 10;
 	private int prodRate = 1;
 	private int upgradeCost = 10;
 	private int level = 1;
-	
-	public boolean clicked = false;
-	public boolean locationSet = false;
 	
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
@@ -38,60 +35,9 @@ public class Goldmine extends Image{
 	}
 	
 	public void update(MousePicker picker) {
-		if(!this.isLocationSet()) {
-			int collisions = 0;
-			setPosition(picker.getCurrentRay());
-			if(picker.isLeftButtonDown()) {
-				for(int i = 0; i < Main.images.size(); i++) {
-					if(hit(Main.images.get(i).getPosition())) {
-						collisions++;
-					}
-				}
-				if(collisions < 2) {
-					setLocationSet(true);
-				}
-			}
-		}
-		if(isClicked()) {
-			if(picker.isRightButtonDown()) {
-				setClicked(false);
-			}
-			
-			if(picker.isLeftButtonDown() && hit(picker)) {
-				collect();
-			}
-			while(Keyboard.next()) {
-				if(Keyboard.getEventKeyState()) {
-					if(Keyboard.getEventKey() == Keyboard.KEY_U) { upgrade(); }
-					else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
-				}
-			}
-		}
-	}
-	
-	protected void run(MousePicker picker) {
-		//super.run(picker);
-		if(picker.isRightButtonDown()) {
-			setClicked(false);
-		}
-		if(!this.isLocationSet()) {
-			int collisions = 0;
-			setPosition(picker.getCurrentRay());
-			if(picker.isLeftButtonDown()) {
-				for(int i = 0; i < Main.images.size(); i++) {
-					if(hit(Main.images.get(i).getPosition())) {
-						collisions++;
-					}
-				}
-				if(collisions < 2) {
-					setLocationSet(true);
-				}
-			}
-		}
+		super.update(picker);
 		if(picker.isLeftButtonDown()) {
-			if(clicked) {
 			collect();
-			}
 		}
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
@@ -99,21 +45,6 @@ public class Goldmine extends Image{
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
-	}
-	
-	public void setClicked(boolean clicked) {
-		if(clicked) {
-			showGUI();
-			setScale(0.15f);
-		} else { 
-			hideGUI();
-			setScale(0.125f); 
-		}
-		this.clicked = clicked;
-	}
-	
-	public boolean isClicked() {
-		return clicked;
 	}
 	
 	protected void showGUI() {
@@ -159,13 +90,5 @@ public class Goldmine extends Image{
 			upgradeCost *= 2;
 			hideGUI();
 		} else { System.out.println("Goldmine Nr " + ID + " has reached the maximum level!"); }
-	}
-
-	protected boolean isLocationSet() {
-		return locationSet;
-	}
-
-	protected void setLocationSet(boolean locationSet) {
-		this.locationSet = locationSet;
 	}
 }

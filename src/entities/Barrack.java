@@ -14,55 +14,19 @@ public class Barrack extends Image{
 	
 	public int ID;
 	
-	public boolean clicked = false;
-	public boolean locationSet = false;
-	
 	public Barrack(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Kaserne"), position, rotX, rotY, rotZ, scale);
 		this.ID = id;
 	}
 	
 	public void update(MousePicker picker) {
-		if(!this.isLocationSet()) {
-			int collisions = 0;
-			setPosition(picker.getCurrentRay());
-			if(picker.isLeftButtonDown()) {
-				for(int i = 0; i < Main.images.size(); i++) {
-					if(hit(Main.images.get(i).getPosition())) {
-						collisions++;
-					}
-				}
-				if(collisions < 2) {
-					setLocationSet(true);
-				}
+		super.update(picker);
+		while(Keyboard.next()) {
+			if(Keyboard.getEventKeyState()) {
+				if(Keyboard.getEventKey() == Keyboard.KEY_1) { System.out.println("bought soldier"); }
+				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
-		if(isClicked()) {
-			if(picker.isRightButtonDown()) {
-				setClicked(false);
-			}
-			while(Keyboard.next()) {
-				if(Keyboard.getEventKeyState()) {
-					if(Keyboard.getEventKey() == Keyboard.KEY_1) { System.out.println("bought soldier"); }
-					else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
-				}
-			}
-		}
-	}
-	
-	public void setClicked(boolean clicked) {
-		if(clicked) {
-			showGUI();
-			setScale(0.15f);
-		} else { 
-			hideGUI();
-			setScale(0.125f); 
-		}
-		this.clicked = clicked;
-	}
-	
-	public boolean isClicked() {
-		return clicked;
 	}
 	
 	protected void showGUI() {
@@ -80,11 +44,4 @@ public class Barrack extends Image{
 		Main.gold -= 10;
 	}
 	
-	protected boolean isLocationSet() {
-		return locationSet;
-	}
-
-	protected void setLocationSet(boolean locationSet) {
-		this.locationSet = locationSet;
-	}
 }
