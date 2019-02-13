@@ -10,7 +10,9 @@ import toolBox.MousePicker;
 
 public class Soldier extends Image{
 
-	int ID;
+	public int ID;
+	
+	int hp = 30;
 	
 	public Soldier(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Soldat"), position, rotX, rotY, rotZ, scale);
@@ -24,11 +26,18 @@ public class Soldier extends Image{
 				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
+		if(hp <= 0) {
+			Main.images.remove(this);
+			hideGUI();
+			//Main.soldiers.remove(this);
+		}
 	}
 	
 	protected void showGUI() {
-		super.showGUI();
-		GUIText Text = new GUIText("ID : " + ID, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
+		GUIText Text = new GUIText("ID : " + ID + " | HP : " + hp, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
+		GUIText moveText = new GUIText("Press 'M' to move soldier", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
+		moveText.setColour(255, 255, 255);
 		texts.add(Text);
+		texts.add(moveText);
 	}
 }

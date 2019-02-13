@@ -76,7 +76,7 @@ public class Main {
 			public void run() {
 				canSpawn = true;
 			}
-		}, 1*1000, 1*5000);
+		}, 5000, 10 * 1000);
 		
 		while(!Display.isCloseRequested()) {
 			camera.move(picker);
@@ -180,11 +180,15 @@ public class Main {
 		
 		if(updateRate == 60) {
 			if(!goldmines.isEmpty()) {
-				for(Zombie zombie: zombies) { 
+				for(Zombie zombie: zombies) {
 					zombie.update();
 				}
 			}
 			updateRate = 0;
+		}
+		
+		if(picker.isRightButtonDown()) {
+			disableImages();
 		}
 		
 		while (Keyboard.next()) {

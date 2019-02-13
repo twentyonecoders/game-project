@@ -28,12 +28,14 @@ public class Barrack extends Image{
 	}
 	
 	protected void showGUI() {
-		super.showGUI();
-		GUIText soldierText = new GUIText("Press '1' to buy soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
 		GUIText Text = new GUIText("ID : " + ID, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
+		GUIText soldierText = new GUIText("Press '1' to buy soldier (10 Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
+		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
 		soldierText.setColour(255, 255, 255);
-		texts.add(soldierText);
+		moveText.setColour(255, 255, 255);
 		texts.add(Text);
+		texts.add(soldierText);
+		texts.add(moveText);
 	}
 		
 	private void buySoldier() {

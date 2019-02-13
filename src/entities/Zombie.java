@@ -8,6 +8,8 @@ public class Zombie extends Image{
 
 	public int ID;
 	
+	int hp = 10;
+	
 	Vector3f target;
 	
 	public Zombie (Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
@@ -16,20 +18,22 @@ public class Zombie extends Image{
 	}
 	
 	public void update() {
-		if(hitsGoldmine()) {
-			System.out.println("hit goldmine");
-		} else if(hitsSoldier()){
-			System.out.println("hit soldier");
-		} else {
+		if(hitsGoldmine() || hitsSoldier());
+		else {
 			target = nearestObject().getPosition();
 			increasePosition(calculateDirection(target).x, calculateDirection(target).y, 0);
 		}
+		if(hp == 0) {
+			Main.images.remove(this);
+			//Main.zombies.remove(this);
+		}
 	}
 	
-	public boolean hitsGoldmine() {
+	private boolean hitsGoldmine() {
 		if(!Main.goldmines.isEmpty()) {
 			for(Goldmine goldmine: Main.goldmines) {
 				if(hit(goldmine.getPosition())) {
+					goldmine.hp -= 5;
 					return true;
 				}
 			}
@@ -37,10 +41,12 @@ public class Zombie extends Image{
 		return false;
 	}
 
-	public boolean hitsSoldier() {
+	private boolean hitsSoldier() {
 		if(!Main.soldiers.isEmpty()) {
 			for(Soldier soldier: Main.soldiers) {
 				if(hit(soldier.getPosition())) {
+					soldier.hp -= 5;
+					hp -= 5;
 					return true;
 				}
 			}
@@ -48,7 +54,7 @@ public class Zombie extends Image{
 		return false;
 	}
 	
-	public Image nearestObject(){
+	private Image nearestObject(){
 		Image nearest = null;
 		if(!Main.goldmines.isEmpty()) {
 			nearest = Main.goldmines.get(0);

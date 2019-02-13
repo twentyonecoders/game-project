@@ -27,6 +27,8 @@ public class Goldmine extends Image{
 	private int upgradeCost = 10;
 	private int level = 1;
 	
+	int hp = 50;
+	
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
 		ID = id;
@@ -45,15 +47,21 @@ public class Goldmine extends Image{
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
+		if(hp <= 0) {
+			Main.images.remove(this);
+			hideGUI();
+		}
 	}
 	
 	protected void showGUI() {
-		super.showGUI();
+		GUIText Text = new GUIText("ID : " + ID + " | HP : " + hp, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
 		GUIText upgradeText = new GUIText("Press 'U' to upgrade (" + upgradeCost + " Gold)", 1.5f, Main.font, new Vector2f(0.0f, 0.3f), 1f, true);
-		GUIText Text = new GUIText("ID : " + ID, 1.5f, Main.font, new Vector2f(0.0f, 0.1f), 1f, true);
+		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
 		upgradeText.setColour(255, 255, 255);
-		texts.add(upgradeText);
+		moveText.setColour(255, 255, 255);
 		texts.add(Text);
+		texts.add(upgradeText);
+		texts.add(moveText);
 	}
 	
 	private void generateGold(){
@@ -77,8 +85,8 @@ public class Goldmine extends Image{
 	}
 	
 	private void upgrade() {
-		source.play(upgradeBuffer);
 		if(level < 5 && Main.gold >= upgradeCost) {
+			source.play(upgradeBuffer);
 			level++;
 			if(level == 2) { changeImage("Goldmine_2"); }
 			else if(level == 3) { changeImage("Goldmine_3"); }

@@ -30,7 +30,7 @@ public class Image extends Entity{
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
-		source.play(buildBuffer);
+		//source.play(buildBuffer);
 		AudioMaster.sources.add(source);
 	}
 	
@@ -67,9 +67,6 @@ public class Image extends Entity{
 				}
 				if(collisions < 2) { setLocationSet(true); }
 			}
-		}
-		if(picker.isRightButtonDown()) {
-			setClicked(false);
 		}
 	}
 	
@@ -111,9 +108,6 @@ public class Image extends Entity{
 	}
 	
 	protected void showGUI() {
-		GUIText moveText = new GUIText("Press 'M' to move building", 1.5f, Main.font, new Vector2f(0.0f, 0.2f), 1f, true);
-		moveText.setColour(255, 255, 255);
-		texts.add(moveText);
 	}
 	
 	protected void hideGUI() {
