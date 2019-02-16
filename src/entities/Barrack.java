@@ -21,7 +21,7 @@ public class Barrack extends Image{
 		super.update(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_1) { buySoldier(); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_1 && Main.gold >= 10) { buySoldier(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
@@ -40,8 +40,8 @@ public class Barrack extends Image{
 		
 	private void buySoldier() {
 		Main.disableImages();
-		Soldier soldat = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, Main.soldiers.size());
-		Main.soldiers.add(soldat);
+		Soldier soldier = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, Main.soldiers.size());
+		Main.soldiers.add(soldier);
 		Main.gold -= 10;
 	}
 	

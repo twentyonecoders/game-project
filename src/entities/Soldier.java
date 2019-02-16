@@ -27,7 +27,7 @@ public class Soldier extends Image{
 			}
 		}
 		if(hp <= 0) {
-			Main.images.remove(this);
+			//Main.images.remove(this);
 			hideGUI();
 			//Main.soldiers.remove(this);
 		}

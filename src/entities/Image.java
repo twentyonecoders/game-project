@@ -3,7 +3,6 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
@@ -26,11 +25,14 @@ public class Image extends Entity{
 	
 	public boolean clicked = true;
 	public boolean locationSet = false;
+	public boolean dead = false;
 	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
-		//source.play(buildBuffer);
+		Main.moving = true;
+		source.setVolume(0.1f);
+		source.play(buildBuffer);
 		AudioMaster.sources.add(source);
 	}
 	
@@ -121,6 +123,8 @@ public class Image extends Entity{
 	}
 
 	protected void setLocationSet(boolean locationSet) {
+		if(locationSet) { Main.moving = false; }
+		else { Main.moving = true; }
 		this.locationSet = locationSet;
 	}
 }

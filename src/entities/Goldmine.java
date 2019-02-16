@@ -44,7 +44,9 @@ public class Goldmine extends Image{
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_U) { upgrade(); }
-				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
+				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { 
+					setLocationSet(false);
+					}
 			}
 		}
 		if(hp <= 0) {

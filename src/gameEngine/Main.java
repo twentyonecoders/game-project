@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
+import audio.Source;
 import entities.Barrack;
 import entities.Camera;
 import entities.Entity;
@@ -40,9 +41,10 @@ public class Main {
 	public static int gold = 1000;
 	static int gmCost = 50;
 	static int baCost = 80;
-	static boolean canSpawn = false;
-	
 	static int updateRate = 0;
+	
+	public static boolean moving = false;
+	static boolean canSpawn = false;
 	
 	public static List<Image> images = new ArrayList<Image>();
 	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
@@ -52,8 +54,8 @@ public class Main {
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
+		//initialize display & tools
 		DisplayManager.createDisplay();
-		
 		Loader loader = new Loader();
 		StaticShader shader = new StaticShader();
 		Renderer renderer = new Renderer();
@@ -63,14 +65,22 @@ public class Main {
 		TextMaster.init(loader);
 		AudioMaster.init();
 		AudioMaster.setListenerData(0, 0, 0);
+		
+		//initialize sound
+		int backgroundBuffer = AudioMaster.loadSound("audio/RoyaleClash.wav");
+		Source source = new Source();
+		source.setLooping(true);
+		AudioMaster.sources.add(source);
+		
 		font = new FontType(loader.loadTexture("comicsans"), new File("res/comicsans.fnt"));
 		
 		images.clear();
 		guiGraphics.clear();
 		setUpGUI(loader, guiGraphics, font);
 		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), 
-				new ModelTexture(loader.loadTexture("grass"))), new Vector3f(0, 0, 1), 0, 0, 0, 1);
+				new ModelTexture(loader.loadTexture("Background"))), new Vector3f(0, 0, 1), 0, 0, 0, 1);
 
+		//start timer for zombie spawning
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
@@ -78,6 +88,9 @@ public class Main {
 			}
 		}, 5000, 10 * 1000);
 		
+		source.play(backgroundBuffer);
+		
+		//display update loop
 		while(!Display.isCloseRequested()) {
 			camera.move(picker);
 			picker.update();
@@ -134,6 +147,7 @@ public class Main {
 		TextMaster.removeText(text);
 	}
 
+	//spawn zombies
 	public static void spawnEnemy() {
 		Random random = new Random();
 		float x = -0.8f + random.nextFloat() * (-0.8f + 0.6f);
@@ -147,34 +161,18 @@ public class Main {
 	//process game logic
 	public static void updateGame(MousePicker picker) {
 		
-		int counter = 0;
-		for(Image image: images) {
-			if(image.isClicked()) {
-				counter++;
-			}
-		}
-		if(counter == 0) {
-			for(Image image: images) {
+		if(!moving) {
+			for(Image image: images) { 
 				if(picker.isLeftButtonDown() && image.hit(picker)) {
+					disableImages();
 					image.setClicked(true);
 				}
 			}
 		}
-		if(counter == 1) {
-			for(Goldmine goldmine: goldmines) { 
-				if(goldmine.isClicked()) {
-					goldmine.update(picker);
-				}
-			}
-			for(Barrack barrack: barracks) {
-				if(barrack.isClicked()) {
-					barrack.update(picker);
-				}
-			}
-			for(Soldier soldier: soldiers) {
-				if(soldier.isClicked()) {
-					soldier.update(picker);
-				}
+		
+		for(int i = 0; i < images.size(); i++) {
+			if(images.get(i).isClicked()) {
+				images.get(i).update(picker);
 			}
 		}
 		
@@ -189,18 +187,21 @@ public class Main {
 		
 		if(picker.isRightButtonDown()) {
 			disableImages();
+			moving = false;
 		}
 		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 					if(gold >= gmCost) {
+						disableImages();
 	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, goldmines.size());
 	            		gold -= gmCost;
 	            		goldmines.add(goldmine);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
 	            	if(gold >= baCost) {
+	            		disableImages();
 	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
 	            		gold -= baCost;
 	            		barracks.add(barrack);
