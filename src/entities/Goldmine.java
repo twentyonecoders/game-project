@@ -28,7 +28,7 @@ public class Goldmine extends Image{
 	private int level = 1;
 	
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
+		super("Goldmine_1", position, rotX, rotY, rotZ, scale, 1);
 		ID = id;
 		hp = 50;
 		generateGold();

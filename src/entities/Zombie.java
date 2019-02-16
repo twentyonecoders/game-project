@@ -11,7 +11,7 @@ public class Zombie extends Image{
 	Vector3f target;
 	
 	public Zombie (Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super(("Zombie"), position, rotX, rotY, rotZ, scale);
+		super(("Zombie"), position, rotX, rotY, rotZ, scale, 2);
 		this.ID = id;
 		hp = 10;
 		setClicked(false);

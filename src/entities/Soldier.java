@@ -13,7 +13,7 @@ public class Soldier extends Image{
 	public int ID;
 	
 	public Soldier(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super(("Soldat"), position, rotX, rotY, rotZ, scale);
+		super(("Soldat"), position, rotX, rotY, rotZ, scale, 2);
 		this.ID = id;
 		hp = 30;
 	}

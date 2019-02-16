@@ -27,15 +27,27 @@ public class Image extends Entity{
 	public boolean locationSet = false;
 	public boolean dead = false;
 	
-	int hp;
+	protected int hp;
+	private float width, widthX, height;
 	
-	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale, int type) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
 		Main.moving = true;
 		AudioMaster.sources.add(source);
 		source.setVolume(0.1f);
 		source.play(buildBuffer);
+		//buildings
+		if(type == 1) {
+			width = 0.15f;
+			widthX = width;
+			height = 0.24f;
+		}
+		//soldiers, zombies
+		else if(type == 2) {
+			width = 0.05f;
+			height = 0.2f;
+		}
 	}
 	
 	public static float[] vertices = {
@@ -90,10 +102,10 @@ public class Image extends Entity{
 	}
 	
 	public boolean hit(MousePicker picker) {
-		if(picker.getCurrentRay().x <= getPosition().x + 0.075f &&
-				picker.getCurrentRay().x >= getPosition().x - 0.075f &&
-				picker.getCurrentRay().y <= getPosition().y + 0.12f &&
-				picker.getCurrentRay().y >= getPosition().y - 0.12f) {
+		if(picker.getCurrentRay().x <= getPosition().x + width / 2 &&
+				picker.getCurrentRay().x >= getPosition().x - width / 2 &&
+				picker.getCurrentRay().y <= getPosition().y + height / 2 &&
+				picker.getCurrentRay().y >= getPosition().y - height / 2) {
 			return true;
 		} else {
 			return false;
@@ -101,10 +113,10 @@ public class Image extends Entity{
 	}
 	
 	protected boolean hit(Vector3f pos) {
-		if(pos.x <= getPosition().x + 0.15f &&
-				pos.x >= getPosition().x - 0.15f &&
-				pos.y <= getPosition().y + 0.24f &&
-				pos.y >= getPosition().y - 0.24f) {
+		if(pos.x <= getPosition().x + width &&
+				pos.x >= getPosition().x - width &&
+				pos.y <= getPosition().y + height &&
+				pos.y >= getPosition().y - height) {
 			return true;
 		} else {
 			return false;

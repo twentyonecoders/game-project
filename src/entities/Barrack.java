@@ -13,7 +13,7 @@ public class Barrack extends Image{
 	public int ID;
 	
 	public Barrack(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super(("Kaserne"), position, rotX, rotY, rotZ, scale);
+		super(("Kaserne"), position, rotX, rotY, rotZ, scale, 1);
 		this.ID = id;
 		hp = 30;
 	}
