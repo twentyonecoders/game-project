@@ -15,6 +15,7 @@ public class Barrack extends Image{
 	public Barrack(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Kaserne"), position, rotX, rotY, rotZ, scale);
 		this.ID = id;
+		hp = 30;
 	}
 	
 	public void update(MousePicker picker) {
@@ -24,6 +25,10 @@ public class Barrack extends Image{
 				if(Keyboard.getEventKey() == Keyboard.KEY_1 && Main.gold >= 10) { buySoldier(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
+		}
+		if(hp == 0) {
+			dead = true;
+			setClicked(false);
 		}
 	}
 	

@@ -27,11 +27,10 @@ public class Goldmine extends Image{
 	private int upgradeCost = 10;
 	private int level = 1;
 	
-	int hp = 50;
-	
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale);
 		ID = id;
+		hp = 50;
 		generateGold();
 		AudioMaster.sources.add(source);
 	}
@@ -48,10 +47,6 @@ public class Goldmine extends Image{
 					setLocationSet(false);
 					}
 			}
-		}
-		if(hp <= 0) {
-			Main.images.remove(this);
-			hideGUI();
 		}
 	}
 	

@@ -12,11 +12,10 @@ public class Soldier extends Image{
 
 	public int ID;
 	
-	int hp = 30;
-	
 	public Soldier(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Soldat"), position, rotX, rotY, rotZ, scale);
 		this.ID = id;
+		hp = 30;
 	}
 	
 	public void update(MousePicker picker) {
@@ -26,10 +25,9 @@ public class Soldier extends Image{
 				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
-		if(hp <= 0) {
-			//Main.images.remove(this);
-			hideGUI();
-			//Main.soldiers.remove(this);
+		if(hp == 0) {
+			dead = true;
+			setClicked(false);
 		}
 	}
 	

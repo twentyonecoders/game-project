@@ -51,6 +51,8 @@ public class Main {
 	public static List<Barrack> barracks = new ArrayList<Barrack>();
 	public static List<Soldier> soldiers = new ArrayList<Soldier>();
 	public static List<Zombie> zombies = new ArrayList<Zombie>();
+	
+	public static List<Image> toRemove =  new ArrayList<Image>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -88,7 +90,7 @@ public class Main {
 			}
 		}, 5000, 10 * 1000);
 		
-		source.play(backgroundBuffer);
+		//source.play(backgroundBuffer);
 		
 		//display update loop
 		while(!Display.isCloseRequested()) {
@@ -179,7 +181,7 @@ public class Main {
 		if(updateRate == 60) {
 			if(!goldmines.isEmpty()) {
 				for(Zombie zombie: zombies) {
-					zombie.update();
+					zombie.die();
 				}
 			}
 			updateRate = 0;
@@ -209,6 +211,12 @@ public class Main {
 	            }
 			}
 		}
+		
+		zombies.removeIf((Zombie zombie) -> zombie.dead == true);
+		soldiers.removeIf((Soldier soldier) -> soldier.dead == true);
+		goldmines.removeIf((Goldmine goldmine) -> goldmine.dead == true);
+		images.removeIf((Image image) -> image.dead == true);
+		
 		updateRate++;
 	}
 	

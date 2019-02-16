@@ -7,25 +7,25 @@ import gameEngine.Main;
 public class Zombie extends Image{
 
 	public int ID;
-	
-	int hp = 10;
-	
+
 	Vector3f target;
 	
 	public Zombie (Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Zombie"), position, rotX, rotY, rotZ, scale);
 		this.ID = id;
+		hp = 10;
+		setClicked(false);
 	}
 	
-	public void update() {
+	public void die() {
 		if(hitsGoldmine() || hitsSoldier());
 		else {
 			target = nearestObject().getPosition();
 			increasePosition(calculateDirection(target).x, calculateDirection(target).y, 0);
 		}
 		if(hp == 0) {
-			Main.images.remove(this);
-			//Main.zombies.remove(this);
+			dead = true;
+			setClicked(false);
 		}
 	}
 	

@@ -27,13 +27,15 @@ public class Image extends Entity{
 	public boolean locationSet = false;
 	public boolean dead = false;
 	
+	int hp;
+	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		Main.images.add(this);
 		Main.moving = true;
+		AudioMaster.sources.add(source);
 		source.setVolume(0.1f);
 		source.play(buildBuffer);
-		AudioMaster.sources.add(source);
 	}
 	
 	public static float[] vertices = {
