@@ -13,7 +13,7 @@ import fonts.GUIText;
 import gameEngine.Main;
 import toolBox.MousePicker;
 
-public class Goldmine extends Image{
+public class Lumberjack extends Image{
 	
 	public int ID;
 	
@@ -21,14 +21,14 @@ public class Goldmine extends Image{
 	private int collectBuffer = AudioMaster.loadSound("audio/collect.wav");
 	private int upgradeBuffer = AudioMaster.loadSound("audio/upgrade.wav");
 	
-	private int gold = 0;
-	private int max = 20;
-	private int prodRate = 2;
+	private int wood = 0;
+	private int max = 10;
+	private int prodRate = 1;
 	private int upgradeCost = 10;
 	private int level = 1;
 	
-	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super("Goldmine_1", position, rotX, rotY, rotZ, scale, 1);
+	public Lumberjack(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
+		super("Holzfäller", position, rotX, rotY, rotZ, scale, 1);
 		ID = id;
 		hp = 50;
 		generate();
@@ -69,19 +69,19 @@ public class Goldmine extends Image{
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				if (gold <= max - 1) {
-					gold += prodRate;
-					//System.out.println("Goldmine Nr " + ID + " has : " + gold + " Gold");
+				if (wood <= max - 1) {
+					wood += prodRate;
+					//System.out.println("Lumberjack Nr " + ID + " has : " + wood + " Wood");
 				} else {
-					//System.out.println("Goldmine Nr " + ID + " is full!");
+					//System.out.println("Lumberjack Nr " + ID + " is full!");
 				}
 		    }
 		}, 1*1000, 1*1000);
 	}
 	
 	private void collect() {
-		Main.gold += gold;
-		gold = 0;
+		Main.wood += wood;
+		wood = 0;
 		source.play(collectBuffer);
 	}
 	
@@ -89,12 +89,8 @@ public class Goldmine extends Image{
 		if(level < 5 && Main.gold >= upgradeCost) {
 			source.play(upgradeBuffer);
 			level++;
-			if(level == 2) { changeImage("Goldmine_2"); }
-			else if(level == 3) { changeImage("Goldmine_3"); }
-			else if(level == 4) { changeImage("Goldmine_4"); }
-			else if(level == 5) { changeImage("Goldmine_5"); }
 			max += 10 * level;
-			prodRate *= 2;
+			prodRate++;
 			Main.gold -= upgradeCost;
 			upgradeCost *= 2;
 			hideGUI();

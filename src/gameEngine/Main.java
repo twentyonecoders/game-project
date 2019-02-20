@@ -20,6 +20,7 @@ import entities.Entity;
 import entities.Farm;
 import entities.Goldmine;
 import entities.Image;
+import entities.Lumberjack;
 import entities.Soldier;
 import entities.Zombie;
 import fonts.FontType;
@@ -39,11 +40,13 @@ public class Main {
 
 	public static FontType font;
 	
-	public static int gold = 1000;
+	public static int gold = 150;
 	public static int food = 0;
+	public static int wood = 0;
 	static int gmCost = 30;
 	static int baCost = 50;
 	static int faCost = 30;
+	static int woCost = 30;
 	static int updateRate = 0;
 	
 	public static boolean moving = false;
@@ -53,6 +56,7 @@ public class Main {
 	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
 	public static List<Barrack> barracks = new ArrayList<Barrack>();
 	public static List<Farm> farms = new ArrayList<Farm>();
+	public static List<Lumberjack> lumberjacks = new ArrayList<Lumberjack>();
 	public static List<Soldier> soldiers = new ArrayList<Soldier>();
 	public static List<Zombie> zombies = new ArrayList<Zombie>();
 	
@@ -155,6 +159,16 @@ public class Main {
 		farmCostText.setColour(255, 255, 0);
 		GUIText farmText = new GUIText("Press 'F'", 1.5f, font, new Vector2f(0.42f, 0.774f), 0.08f, true);
 		farmText.setColour(255, 255, 0);
+		
+		//Lumerjack GUI
+		GUITexture guiWoodBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(0.25f, -0.75f), new Vector2f(0.15f, 0.24f));
+		GUITexture guiWood = new GUITexture(loader.loadTexture("Holzfäller"), new Vector2f(0.25f, -0.75f), new Vector2f(0.07f, 0.112f));
+		guis.add(guiWoodBack);
+		guis.add(guiWood);
+		GUIText woodCostText = new GUIText("Cost : " + woCost + " Gold", 1f, font, new Vector2f(0.54f, 0.95f), 0.14f, true);
+		woodCostText.setColour(255, 255, 0);
+		GUIText woodText = new GUIText("Press 'L'", 1.5f, font, new Vector2f(0.6f, 0.774f), 0.08f, true);
+		woodText.setColour(255, 255, 0);
 	}
 	
 	//render GUI
@@ -163,10 +177,13 @@ public class Main {
 		goldText.setColour(255, 255, 0);
 		GUIText foodText = new GUIText("Bread : " + food, 2, font, new Vector2f(0.01f, 0.06f), 1f, false);
 		foodText.setColour(255, 255, 0);
+		GUIText woodText = new GUIText("Wood : " + wood, 2, font, new Vector2f(0.01f, 0.11f), 1f, false);
+		woodText.setColour(200, 200, 200);
 		guiRenderer.render(guiGraphics);
 		TextMaster.render();
 		TextMaster.removeText(goldText);
 		TextMaster.removeText(foodText);
+		TextMaster.removeText(woodText);
 	}
 
 	//spawn zombies
@@ -233,8 +250,15 @@ public class Main {
 	            	if(gold >= faCost) {
 	            		disableImages();
 	            		Farm farm = new Farm(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, farms.size());
-	            		gold -= baCost;
+	            		gold -= faCost;
 	            		farms.add(farm);
+	            	}
+	            } else if(Keyboard.getEventKey() == Keyboard.KEY_L) {
+	            	if(gold >= woCost) {
+	            		disableImages();
+	            		Lumberjack lumberjack = new Lumberjack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, lumberjacks.size());
+	            		gold -= woCost;
+	            		lumberjacks.add(lumberjack);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_P) {
 	            	if(source.isPlaying()) { source.pause();
