@@ -67,10 +67,10 @@ public class Main {
 		TextMaster.init(loader);
 		AudioMaster.init();
 		AudioMaster.setListenerData(0, 0, 0);
+		Source source = new Source();
 		
 		//initialize sound
 		int backgroundBuffer = AudioMaster.loadSound("audio/RoyaleClash.wav");
-		Source source = new Source();
 		source.setLooping(true);
 		AudioMaster.sources.add(source);
 		
@@ -90,13 +90,13 @@ public class Main {
 			}
 		}, 5000, 10 * 1000);
 		
-		//source.play(backgroundBuffer);
+		source.play(backgroundBuffer);
 		
 		//display update loop
 		while(!Display.isCloseRequested()) {
 			camera.move(picker);
 			picker.update();
-			updateGame(picker);
+			updateGame(picker, source);
 			if(canSpawn) { spawnEnemy(); }
 			
 			renderer.prepare();
@@ -122,22 +122,22 @@ public class Main {
 	
 	//initialize GUI
 	public static void setUpGUI(Loader loader, List<GUITexture> guis, FontType font) {
-		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.65f), new Vector2f(0.07f, 0.14f));
-		GUITexture guiGoldMineBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.8f, -0.65f), new Vector2f(0.08f, 0.15f));
-		GUITexture guiKaserne = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.65f), new Vector2f(0.07f, 0.14f));
-		GUITexture guiKaserneBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.45f, -0.65f), new Vector2f(0.08f, 0.15f));
+		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.07f, 0.112f));
+		GUITexture guiGoldMineBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.15f, 0.24f));
+		GUITexture guiKaserne = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.07f, 0.112f));
+		GUITexture guiKaserneBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.15f, 0.24f));
 		guis.add(guiGoldMineBack);
 		guis.add(guiKaserneBack);
 		guis.add(guiGoldMine);
 		guis.add(guiKaserne);
-		GUIText goldMineCostText = new GUIText("Cost : " + gmCost + " Gold", 1.5f, font, new Vector2f(0.03f, 0.95f), 0.15f, true);
-		GUIText kaserneCostText = new GUIText("Cost : " + baCost + " Gold", 1.5f, font, new Vector2f(0.2f, 0.95f), 0.15f, true);
+		GUIText goldMineCostText = new GUIText("Cost : " + gmCost + " Gold", 1f, font, new Vector2f(0.03f, 0.95f), 0.14f, true);
+		GUIText kaserneCostText = new GUIText("Cost : " + baCost + " Gold", 1f, font, new Vector2f(0.2f, 0.95f), 0.14f, true);
 		goldMineCostText.setColour(255, 255, 0);
 		kaserneCostText.setColour(255, 255, 0);
-		GUIText goldMineText = new GUIText("Press 'G'", 1.5f, font, new Vector2f(0.03f, 0.9f), 0.15f, true);
-		GUIText kaserneText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.2f, 0.9f), 0.15f, true);
-		goldMineText.setColour(0, 0, 0);
-		kaserneText.setColour(0, 0, 0);
+		GUIText goldMineText = new GUIText("Press 'G'", 1.5f, font, new Vector2f(0.06f, 0.774f), 0.08f, true);
+		GUIText kaserneText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.24f, 0.774f), 0.08f, true);
+		goldMineText.setColour(255, 255, 0);
+		kaserneText.setColour(255, 255, 0);
 	}
 	
 	//render GUI
@@ -161,7 +161,7 @@ public class Main {
 	}
 	
 	//process game logic
-	public static void updateGame(MousePicker picker) {
+	public static void updateGame(MousePicker picker, Source source) {
 		
 		if(!moving) {
 			for(Image image: images) { 
@@ -208,6 +208,9 @@ public class Main {
 	            		gold -= baCost;
 	            		barracks.add(barrack);
 	            	}
+	            } else if(Keyboard.getEventKey() == Keyboard.KEY_P) {
+	            	if(source.isPlaying()) { source.pause();
+	            	} else { source.continuePlaying(); }
 	            }
 			}
 		}
