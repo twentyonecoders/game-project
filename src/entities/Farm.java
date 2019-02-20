@@ -13,33 +13,29 @@ import fonts.GUIText;
 import gameEngine.Main;
 import toolBox.MousePicker;
 
-public class Goldmine extends Image{
-	
+public class Farm extends Image {
+
 	public int ID;
 	
+	Timer timer = new Timer();
+	boolean run = true;
 	Source source = new Source();
-	private int collectBuffer = AudioMaster.loadSound("audio/collect.wav");
 	private int upgradeBuffer = AudioMaster.loadSound("audio/upgrade.wav");
 	
-	private int gold = 0;
-	private int maxGold = 10;
 	private int prodRate = 1;
 	private int upgradeCost = 10;
 	private int level = 1;
 	
-	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
-		super("Goldmine_1", position, rotX, rotY, rotZ, scale, 1);
+	public Farm(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
+		super("Farm", position, rotX, rotY, rotZ, scale, 1);
 		ID = id;
 		hp = 50;
-		generateGold();
+		generateFood();
 		AudioMaster.sources.add(source);
 	}
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
-		if(picker.isLeftButtonDown()) {
-			collect();
-		}
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_U) { upgrade(); }
@@ -47,10 +43,6 @@ public class Goldmine extends Image{
 					setLocationSet(false);
 				}
 			}
-		}
-		if(hp == 0) {
-			dead = true;
-			setClicked(false);
 		}
 	}
 	
@@ -65,39 +57,24 @@ public class Goldmine extends Image{
 		texts.add(moveText);
 	}
 	
-	private void generateGold(){
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
+	private void generateFood(){
+		TimerTask task = new TimerTask() {
 			public void run() {
-				if (gold <= maxGold - 1) {
-					gold += prodRate;
-					//System.out.println("Goldmine Nr " + ID + " has : " + gold + " Gold");
-				} else {
-					//System.out.println("Goldmine Nr " + ID + " is full!");
-				}
-		    }
-		}, 1*1000, 1*1000);
-	}
-	
-	private void collect() {
-		Main.gold += gold;
-		gold = 0;
-		source.play(collectBuffer);
+				if(run)
+					Main.food += prodRate;
+			}
+		};
+		timer.schedule(task, 1000, 1000);
 	}
 	
 	private void upgrade() {
 		if(level < 5 && Main.gold >= upgradeCost) {
 			source.play(upgradeBuffer);
 			level++;
-			if(level == 2) { changeImage("Goldmine_2"); }
-			else if(level == 3) { changeImage("Goldmine_3"); }
-			else if(level == 4) { changeImage("Goldmine_4"); }
-			else if(level == 5) { changeImage("Goldmine_5"); }
-			maxGold += 10;
 			prodRate++;
 			Main.gold -= upgradeCost;
 			upgradeCost *= 2;
 			hideGUI();
-		} else { System.out.println("Goldmine Nr " + ID + " has reached the maximum level!"); }
+		} else { System.out.println("Farm Nr " + ID + " has reached the maximum level!"); }
 	}
 }

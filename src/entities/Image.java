@@ -28,7 +28,7 @@ public class Image extends Entity{
 	public boolean dead = false;
 	
 	protected int hp;
-	private float width, widthX, height;
+	private float width, height;
 	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale, int type) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
@@ -40,7 +40,6 @@ public class Image extends Entity{
 		//buildings
 		if(type == 1) {
 			width = 0.15f;
-			widthX = width;
 			height = 0.24f;
 		}
 		//soldiers, zombies

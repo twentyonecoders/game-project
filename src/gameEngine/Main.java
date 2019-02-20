@@ -17,6 +17,7 @@ import audio.Source;
 import entities.Barrack;
 import entities.Camera;
 import entities.Entity;
+import entities.Farm;
 import entities.Goldmine;
 import entities.Image;
 import entities.Soldier;
@@ -39,8 +40,10 @@ public class Main {
 	public static FontType font;
 	
 	public static int gold = 1000;
-	static int gmCost = 50;
-	static int baCost = 80;
+	public static int food = 0;
+	static int gmCost = 30;
+	static int baCost = 50;
+	static int faCost = 30;
 	static int updateRate = 0;
 	
 	public static boolean moving = false;
@@ -49,10 +52,10 @@ public class Main {
 	public static List<Image> images = new ArrayList<Image>();
 	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
 	public static List<Barrack> barracks = new ArrayList<Barrack>();
+	public static List<Farm> farms = new ArrayList<Farm>();
 	public static List<Soldier> soldiers = new ArrayList<Soldier>();
 	public static List<Zombie> zombies = new ArrayList<Zombie>();
 	
-	public static List<Image> toRemove =  new ArrayList<Image>();
 	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
@@ -84,13 +87,14 @@ public class Main {
 
 		//start timer for zombie spawning
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
+		TimerTask spawnTask = new TimerTask() {
 			public void run() {
 				canSpawn = true;
 			}
-		}, 5000, 10 * 1000);
+		};
+		timer.scheduleAtFixedRate(spawnTask, 5000, 10 * 1000);
 		
-		source.play(backgroundBuffer);
+		//source.play(backgroundBuffer);
 		
 		//display update loop
 		while(!Display.isCloseRequested()) {
@@ -122,31 +126,47 @@ public class Main {
 	
 	//initialize GUI
 	public static void setUpGUI(Loader loader, List<GUITexture> guis, FontType font) {
-		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.07f, 0.112f));
+		//Goldmine GUI
 		GUITexture guiGoldMineBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.15f, 0.24f));
-		GUITexture guiKaserne = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.07f, 0.112f));
-		GUITexture guiKaserneBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.15f, 0.24f));
+		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiGoldMineBack);
-		guis.add(guiKaserneBack);
 		guis.add(guiGoldMine);
-		guis.add(guiKaserne);
 		GUIText goldMineCostText = new GUIText("Cost : " + gmCost + " Gold", 1f, font, new Vector2f(0.03f, 0.95f), 0.14f, true);
-		GUIText kaserneCostText = new GUIText("Cost : " + baCost + " Gold", 1f, font, new Vector2f(0.2f, 0.95f), 0.14f, true);
 		goldMineCostText.setColour(255, 255, 0);
-		kaserneCostText.setColour(255, 255, 0);
 		GUIText goldMineText = new GUIText("Press 'G'", 1.5f, font, new Vector2f(0.06f, 0.774f), 0.08f, true);
-		GUIText kaserneText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.24f, 0.774f), 0.08f, true);
 		goldMineText.setColour(255, 255, 0);
-		kaserneText.setColour(255, 255, 0);
+		
+		//Barrack GUI;
+		GUITexture guiBarrackBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.15f, 0.24f));
+		GUITexture guiBarrack = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.07f, 0.112f));
+		guis.add(guiBarrackBack);
+		guis.add(guiBarrack);
+		GUIText barrackCostText = new GUIText("Cost : " + baCost + " Gold", 1f, font, new Vector2f(0.2f, 0.95f), 0.14f, true);
+		barrackCostText.setColour(255, 255, 0);
+		GUIText barrackText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.24f, 0.774f), 0.08f, true);
+		barrackText.setColour(255, 255, 0);
+		
+		//Farm GUI
+		GUITexture guiFarmBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.1f, -0.75f), new Vector2f(0.15f, 0.24f));
+		GUITexture guiFarm = new GUITexture(loader.loadTexture("Farm"), new Vector2f(-0.1f, -0.75f), new Vector2f(0.07f, 0.112f));
+		guis.add(guiFarmBack);
+		guis.add(guiFarm);
+		GUIText farmCostText = new GUIText("Cost : " + faCost + " Gold", 1f, font, new Vector2f(0.37f, 0.95f), 0.14f, true);
+		farmCostText.setColour(255, 255, 0);
+		GUIText farmText = new GUIText("Press 'F'", 1.5f, font, new Vector2f(0.42f, 0.774f), 0.08f, true);
+		farmText.setColour(255, 255, 0);
 	}
 	
 	//render GUI
 	public static void renderGUI(FontType font, GUIRenderer guiRenderer, List<GUITexture> guiGraphics) {
-		GUIText text = new GUIText("Gold : " + gold, 3, font, new Vector2f(0.01f, 0.01f), 1f, false);
-		text.setColour(255, 255, 0);
+		GUIText goldText = new GUIText("Gold : " + gold, 2, font, new Vector2f(0.01f, 0.01f), 1f, false);
+		goldText.setColour(255, 255, 0);
+		GUIText foodText = new GUIText("Bread : " + food, 2, font, new Vector2f(0.01f, 0.06f), 1f, false);
+		foodText.setColour(255, 255, 0);
 		guiRenderer.render(guiGraphics);
 		TextMaster.render();
-		TextMaster.removeText(text);
+		TextMaster.removeText(goldText);
+		TextMaster.removeText(foodText);
 	}
 
 	//spawn zombies
@@ -164,7 +184,7 @@ public class Main {
 	public static void updateGame(MousePicker picker, Source source) {
 		
 		if(!moving) {
-			for(Image image: images) { 
+			for(Image image: images) {
 				if(picker.isLeftButtonDown() && image.hit(picker)) {
 					disableImages();
 					image.setClicked(true);
@@ -177,11 +197,12 @@ public class Main {
 				images.get(i).update(picker);
 			}
 		}
+		for(Soldier soldier: soldiers) { soldier.updateImage(); }
 		
 		if(updateRate == 60) {
 			if(!goldmines.isEmpty()) {
 				for(Zombie zombie: zombies) {
-					zombie.die();
+					zombie.update();
 				}
 			}
 			updateRate = 0;
@@ -207,6 +228,13 @@ public class Main {
 	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
 	            		gold -= baCost;
 	            		barracks.add(barrack);
+	            	}
+	            } else if(Keyboard.getEventKey() == Keyboard.KEY_F) {
+	            	if(gold >= faCost) {
+	            		disableImages();
+	            		Farm farm = new Farm(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, farms.size());
+	            		gold -= baCost;
+	            		farms.add(farm);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_P) {
 	            	if(source.isPlaying()) { source.pause();

@@ -17,8 +17,9 @@ public class Zombie extends Image{
 		setClicked(false);
 	}
 	
-	public void die() {
-		if(hitsGoldmine() || hitsSoldier());
+	public void update() {
+		if(checkSoldier()) {}
+		else if(hitsGoldmine());
 		else {
 			target = nearestObject().getPosition();
 			increasePosition(calculateDirection(target).x, calculateDirection(target).y, 0);
@@ -41,10 +42,10 @@ public class Zombie extends Image{
 		return false;
 	}
 
-	private boolean hitsSoldier() {
+	private boolean checkSoldier() {
 		if(!Main.soldiers.isEmpty()) {
 			for(Soldier soldier: Main.soldiers) {
-				if(hit(soldier.getPosition())) {
+				if(hit(soldier.getPosition()) && soldier.isActive()) {
 					soldier.hp -= 5;
 					hp -= 5;
 					return true;
