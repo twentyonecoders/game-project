@@ -41,12 +41,9 @@ public class Main {
 	public static FontType font;
 	
 	public static int gold = 150;
+	public static int wood = 50;
 	public static int food = 0;
-	public static int wood = 0;
-	static int gmCost = 30;
-	static int baCost = 50;
-	static int faCost = 30;
-	static int woCost = 30;
+
 	static int updateRate = 0;
 	
 	public static boolean moving = false;
@@ -135,7 +132,7 @@ public class Main {
 		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiGoldMineBack);
 		guis.add(guiGoldMine);
-		GUIText goldMineCostText = new GUIText("Cost : " + gmCost + " Gold", 1f, font, new Vector2f(0.03f, 0.95f), 0.14f, true);
+		GUIText goldMineCostText = new GUIText("Cost: " + Goldmine.goldCost + " Gold, " + Goldmine.woodCost + " Wood", 1f, font, new Vector2f(0.03f, 0.95f), 0.14f, true);
 		goldMineCostText.setColour(255, 255, 0);
 		GUIText goldMineText = new GUIText("Press 'G'", 1.5f, font, new Vector2f(0.06f, 0.774f), 0.08f, true);
 		goldMineText.setColour(255, 255, 0);
@@ -145,7 +142,7 @@ public class Main {
 		GUITexture guiBarrack = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiBarrackBack);
 		guis.add(guiBarrack);
-		GUIText barrackCostText = new GUIText("Cost : " + baCost + " Gold", 1f, font, new Vector2f(0.2f, 0.95f), 0.14f, true);
+		GUIText barrackCostText = new GUIText("Cost : " + Barrack.goldCost + " Gold, " + Barrack.woodCost + " Wood", 1f, font, new Vector2f(0.2f, 0.95f), 0.14f, true);
 		barrackCostText.setColour(255, 255, 0);
 		GUIText barrackText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.24f, 0.774f), 0.08f, true);
 		barrackText.setColour(255, 255, 0);
@@ -155,7 +152,7 @@ public class Main {
 		GUITexture guiFarm = new GUITexture(loader.loadTexture("Farm"), new Vector2f(-0.1f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiFarmBack);
 		guis.add(guiFarm);
-		GUIText farmCostText = new GUIText("Cost : " + faCost + " Gold", 1f, font, new Vector2f(0.37f, 0.95f), 0.14f, true);
+		GUIText farmCostText = new GUIText("Cost : " + Farm.goldCost + " Gold, " + Farm.woodCost + " Wood", 1f, font, new Vector2f(0.37f, 0.95f), 0.14f, true);
 		farmCostText.setColour(255, 255, 0);
 		GUIText farmText = new GUIText("Press 'F'", 1.5f, font, new Vector2f(0.42f, 0.774f), 0.08f, true);
 		farmText.setColour(255, 255, 0);
@@ -165,7 +162,7 @@ public class Main {
 		GUITexture guiWood = new GUITexture(loader.loadTexture("Holzfäller"), new Vector2f(0.25f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiWoodBack);
 		guis.add(guiWood);
-		GUIText woodCostText = new GUIText("Cost : " + woCost + " Gold", 1f, font, new Vector2f(0.54f, 0.95f), 0.14f, true);
+		GUIText woodCostText = new GUIText("Cost : " + Lumberjack.goldCost + " Gold, " + Lumberjack.woodCost + " Wood", 1f, font, new Vector2f(0.54f, 0.95f), 0.14f, true);
 		woodCostText.setColour(255, 255, 0);
 		GUIText woodText = new GUIText("Press 'L'", 1.5f, font, new Vector2f(0.6f, 0.774f), 0.08f, true);
 		woodText.setColour(255, 255, 0);
@@ -233,31 +230,27 @@ public class Main {
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
-					if(gold >= gmCost) {
+					if(gold >= Goldmine.goldCost && wood >= Goldmine.woodCost) {
 						disableImages();
 	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, goldmines.size());
-	            		gold -= gmCost;
 	            		goldmines.add(goldmine);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_K) {
-	            	if(gold >= baCost) {
+	            	if(gold >= Barrack.goldCost && wood >= Barrack.woodCost) {
 	            		disableImages();
 	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
-	            		gold -= baCost;
 	            		barracks.add(barrack);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_F) {
-	            	if(gold >= faCost) {
+	            	if(gold >= Farm.goldCost && wood >= Farm.woodCost) {
 	            		disableImages();
 	            		Farm farm = new Farm(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, farms.size());
-	            		gold -= faCost;
 	            		farms.add(farm);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_L) {
-	            	if(gold >= woCost) {
+	            	if(gold >= Lumberjack.goldCost && wood >= Lumberjack.woodCost) {
 	            		disableImages();
 	            		Lumberjack lumberjack = new Lumberjack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, lumberjacks.size());
-	            		gold -= woCost;
 	            		lumberjacks.add(lumberjack);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_P) {

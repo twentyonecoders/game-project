@@ -16,6 +16,8 @@ import toolBox.MousePicker;
 public class Lumberjack extends Image{
 	
 	public int ID;
+	public static int woodCost = 10;
+	public static int goldCost = 30;
 	
 	Source source = new Source();
 	private int collectBuffer = AudioMaster.loadSound("audio/collect.wav");
@@ -33,6 +35,8 @@ public class Lumberjack extends Image{
 		hp = 50;
 		generate();
 		AudioMaster.sources.add(source);
+		Main.gold -= goldCost;
+		Main.wood -= woodCost;
 	}
 	
 	public void update(MousePicker picker) {
@@ -42,7 +46,7 @@ public class Lumberjack extends Image{
 		}
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_U) { upgrade(); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_U && Main.gold >= upgradeCost) { upgrade(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { 
 					setLocationSet(false);
 				}
@@ -86,7 +90,7 @@ public class Lumberjack extends Image{
 	}
 	
 	private void upgrade() {
-		if(level < 5 && Main.gold >= upgradeCost) {
+		if(level < 5) {
 			source.play(upgradeBuffer);
 			level++;
 			max += 10 * level;

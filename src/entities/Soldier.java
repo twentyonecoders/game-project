@@ -14,6 +14,8 @@ import toolBox.MousePicker;
 public class Soldier extends Image{
 
 	public int ID;
+	public static int goldCost = 10;
+	public static int foodCost = 10;
 	
 	public boolean active;
 	
@@ -22,17 +24,9 @@ public class Soldier extends Image{
 		this.ID = id;
 		hp = 30;
 		active = true;
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			public void run() {
-				if(Main.food > 0) {
-					Main.food--;
-					setActive(true);
-				} else {
-					setActive(false);
-				}
-			}
-		}, 1000, 1000);
+		useFood();
+		Main.gold -= goldCost;
+		Main.food -= foodCost;
 	}
 	
 	public void update(MousePicker picker) {
@@ -62,6 +56,20 @@ public class Soldier extends Image{
 		moveText.setColour(255, 255, 255);
 		texts.add(Text);
 		texts.add(moveText);
+	}
+	
+	private void useFood() {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			public void run() {
+				if(Main.food > 0) {
+					Main.food--;
+					setActive(true);
+				} else {
+					setActive(false);
+				}
+			}
+		}, 1000, 1000);
 	}
 
 	public void setActive(boolean active) {

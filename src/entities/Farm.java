@@ -16,8 +16,9 @@ import toolBox.MousePicker;
 public class Farm extends Image {
 
 	public int ID;
+	public static int woodCost = 30;
+	public static int goldCost = 50;
 	
-	Timer timer = new Timer();
 	boolean run = true;
 	Source source = new Source();
 	private int upgradeBuffer = AudioMaster.loadSound("audio/upgrade.wav");
@@ -32,13 +33,15 @@ public class Farm extends Image {
 		hp = 50;
 		generateFood();
 		AudioMaster.sources.add(source);
+		Main.gold -= goldCost;
+		Main.wood -= woodCost;
 	}
 	
 	public void update(MousePicker picker) {
 		super.update(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_U) { upgrade(); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_U && Main.gold >= upgradeCost) { upgrade(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { 
 					setLocationSet(false);
 				}
@@ -58,6 +61,7 @@ public class Farm extends Image {
 	}
 	
 	private void generateFood(){
+		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
 				if(run)
@@ -68,7 +72,7 @@ public class Farm extends Image {
 	}
 	
 	private void upgrade() {
-		if(level < 5 && Main.gold >= upgradeCost) {
+		if(level < 5) {
 			source.play(upgradeBuffer);
 			level++;
 			prodRate++;
