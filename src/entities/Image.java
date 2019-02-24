@@ -99,6 +99,7 @@ public class Image extends Entity{
 		} else { 
 			hideGUI();
 			setScale(0.075f); 
+			Main.moving = false;
 		}
 		this.clicked = clicked;
 	}

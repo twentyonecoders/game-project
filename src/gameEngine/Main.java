@@ -39,6 +39,7 @@ import toolBox.MousePicker;
 public class Main {
 
 	public static FontType font;
+	public static Loader loader;
 	
 	public static int gold = 1500;
 	public static int wood = 500;
@@ -62,7 +63,7 @@ public class Main {
 	public static void main(String[] args) {
 		//initialize display & tools
 		DisplayManager.createDisplay();
-		Loader loader = new Loader();
+		loader = new Loader();
 		StaticShader shader = new StaticShader();
 		Renderer renderer = new Renderer();
 		Camera camera = new Camera();
@@ -125,7 +126,7 @@ public class Main {
 		System.exit(0);
 	}
 	
-	//initialize GUI
+	//initialize Building GUI
 	public static void setUpGUI(Loader loader, List<GUITexture> guis, FontType font) {
 		//Goldmine GUI
 		GUITexture guiGoldMineBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.15f, 0.24f));
@@ -168,6 +169,17 @@ public class Main {
 		woodText.setColour(255, 255, 0);
 	}
 	
+	//initialize Soldier GUI
+	public static void soldierGUI(Loader loader, List<GUITexture> guis, FontType font) {
+		GUITexture guiSoldierBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(0.9f, 0.8f), new Vector2f(0.075f, 0.12f));
+		GUITexture guiSoldier = new GUITexture(loader.loadTexture("Soldat"), new Vector2f(0.9f, 0.8f), new Vector2f(0.035f, 0.056f));
+		guis.add(guiSoldierBack);
+		guis.add(guiSoldier);
+		GUIText soldierCostText = new GUIText(Soldier.goldCost + " Gold, " + Soldier.foodCost + " Food", 0.75f, font, new Vector2f(0.88f, 0.13f), 0.14f, true);
+		soldierCostText.setColour(255, 255, 0);
+		GUIText soldierText = new GUIText("Press '1'", 1f, font, new Vector2f(0.91f, 0.037f), 0.08f, true);
+		soldierText.setColour(255, 255, 0);
+	}
 	//render GUI
 	public static void renderGUI(FontType font, GUIRenderer guiRenderer, List<GUITexture> guiGraphics) {
 		GUIText goldText = new GUIText("Gold : " + gold, 2, font, new Vector2f(0.01f, 0.01f), 1f, false);
@@ -241,6 +253,7 @@ public class Main {
 	            		disableImages();
 	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
 	            		barracks.add(barrack);
+	            		soldierGUI(loader, guiGraphics, font);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_F) {
 	            	if(gold >= Farm.goldCost && wood >= Farm.woodCost) {
@@ -253,6 +266,12 @@ public class Main {
 	            		disableImages();
 	            		Lumberjack lumberjack = new Lumberjack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, lumberjacks.size());
 	            		lumberjacks.add(lumberjack);
+	            	}
+	            } else if(Keyboard.getEventKey() == Keyboard.KEY_1) {
+	            	if(gold >= Soldier.goldCost && food >= Soldier.foodCost) {
+	            		disableImages();
+	            		Soldier soldier = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, Main.soldiers.size());
+	            		soldiers.add(soldier);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_P) {
 	            	if(source.isPlaying()) { source.pause();
