@@ -211,11 +211,9 @@ public class Main {
 				images.get(i).update(picker);
 			}
 		}
-		for(Soldier soldier: soldiers) { 
-			soldier.updateImage(); 
-			soldier.health.setPosition(new Vector2f(soldier.getPosition().x, soldier.getPosition().y - 0.15f));
-		}
-		
+		for(Soldier soldier: soldiers) { soldier.updateGraphic(); }
+		for(Goldmine goldmine: goldmines) { goldmine.updateGraphic(); }
+
 		if(updateRate == 60) {
 			if(!goldmines.isEmpty()) {
 				for(Zombie zombie: zombies) {

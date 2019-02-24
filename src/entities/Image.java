@@ -3,6 +3,7 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
@@ -10,6 +11,7 @@ import audio.Source;
 import fonts.GUIText;
 import fonts.TextMaster;
 import gameEngine.Main;
+import guis.GUITexture;
 import models.ModelTexture;
 import models.TexturedModel;
 import renderEngine.Loader;
@@ -26,6 +28,8 @@ public class Image extends Entity{
 	public boolean clicked = true;
 	public boolean locationSet = false;
 	public boolean dead = false;
+	
+	protected GUITexture health;
 	
 	protected int hp;
 	private float width, height;
@@ -47,6 +51,8 @@ public class Image extends Entity{
 			width = 0.05f;
 			height = 0.2f;
 		}
+		health = new GUITexture(loader.loadTexture("/HPBar/100%"), new Vector2f(0, 0), new Vector2f(0.07f, 0.02f));
+		Main.guiGraphics.add(health);
 	}
 	
 	public static float[] vertices = {
@@ -76,6 +82,7 @@ public class Image extends Entity{
 		if(!this.isLocationSet()) {
 			int collisions = 0;
 			setPosition(picker.getCurrentRay());
+			health.setPosition(new Vector2f(position.x, position.y - 0.15f));
 			if(picker.isLeftButtonDown()) {
 				for(int i = 0; i < Main.images.size(); i++) {
 					if(hit(Main.images.get(i).getPosition())) { collisions++; }

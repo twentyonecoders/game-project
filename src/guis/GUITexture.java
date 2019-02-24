@@ -18,6 +18,10 @@ public class GUITexture {
 		return texture;
 	}
 
+	public void setTexture(int texture) {
+		this.texture = texture;
+	}
+
 	public Vector2f getPosition() {
 		return position;
 	}

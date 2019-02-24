@@ -52,7 +52,13 @@ public class Goldmine extends Image{
 				}
 			}
 		}
-		if(hp == 0) {
+	}
+	
+	public void updateGraphic() {
+		if(hp == 30) { health.setTexture(loader.loadTexture("/HPBar/75%"));
+		} else if(hp == 20) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+		} else if(hp == 10) { health.setTexture(loader.loadTexture("/HPBar/25%"));
+		} else if(hp == 0) {
 			dead = true;
 			setClicked(false);
 		}

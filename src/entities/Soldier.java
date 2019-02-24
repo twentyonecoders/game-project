@@ -20,18 +20,14 @@ public class Soldier extends Image{
 	
 	public boolean active;
 	
-	public GUITexture health;
-	
 	public Soldier(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Soldat"), position, rotX, rotY, rotZ, scale, 2);
 		this.ID = id;
-		hp = 30;
+		hp = 20;
 		active = true;
 		useFood();
 		Main.gold -= goldCost;
 		Main.food -= foodCost;
-		health = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(0, 0), new Vector2f(0.07f, 0.02f));
-		Main.guiGraphics.add(health);
 	}
 	
 	public void update(MousePicker picker) {
@@ -41,17 +37,21 @@ public class Soldier extends Image{
 				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
 			}
 		}
-		if(hp == 0) {
-			dead = true;
-			setClicked(false);
-		}
 	}
 	
-	public void updateImage() {
+	public void updateGraphic() {
 		if(!active) {
 			changeImage("Soldat_inactive");
 		} else if (active) {
 			changeImage("Soldat");
+		}
+		if(hp == 15) { health.setTexture(loader.loadTexture("/HPBar/75%"));
+		} else if(hp == 10) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+		} else if(hp == 5) { health.setTexture(loader.loadTexture("/HPBar/25%"));
+		} else if(hp == 0) {
+			Main.guiGraphics.remove(health);
+			dead = true;
+			setClicked(false);
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package entities;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import gameEngine.Main;
@@ -15,6 +16,7 @@ public class Zombie extends Image{
 		this.ID = id;
 		hp = 10;
 		setClicked(false);
+		health.setPosition(new Vector2f(position.x, position.y - 0.15f));
 	}
 	
 	public void update() {
@@ -23,8 +25,11 @@ public class Zombie extends Image{
 		else {
 			target = nearestObject().getPosition();
 			increasePosition(calculateDirection(target).x, calculateDirection(target).y, 0);
+			health.setPosition(new Vector2f(position.x, position.y - 0.15f));
 		}
-		if(hp == 0) {
+		if(hp == 5) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+		} else if(hp == 0) {
+			Main.guiGraphics.remove(health);
 			dead = true;
 			setClicked(false);
 		}
