@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import fonts.GUIText;
 import gameEngine.Main;
+import guis.GUITexture;
 import toolBox.MousePicker;
 
 public class Soldier extends Image{
@@ -19,6 +20,8 @@ public class Soldier extends Image{
 	
 	public boolean active;
 	
+	public GUITexture health;
+	
 	public Soldier(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Soldat"), position, rotX, rotY, rotZ, scale, 2);
 		this.ID = id;
@@ -27,6 +30,8 @@ public class Soldier extends Image{
 		useFood();
 		Main.gold -= goldCost;
 		Main.food -= foodCost;
+		health = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(0, 0), new Vector2f(0.07f, 0.02f));
+		Main.guiGraphics.add(health);
 	}
 	
 	public void update(MousePicker picker) {

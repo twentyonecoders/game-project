@@ -40,9 +40,9 @@ public class Main {
 
 	public static FontType font;
 	
-	public static int gold = 150;
-	public static int wood = 50;
-	public static int food = 0;
+	public static int gold = 1500;
+	public static int wood = 500;
+	public static int food = 100;
 
 	static int updateRate = 0;
 	
@@ -57,7 +57,7 @@ public class Main {
 	public static List<Soldier> soldiers = new ArrayList<Soldier>();
 	public static List<Zombie> zombies = new ArrayList<Zombie>();
 	
-	static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
+	public static List<GUITexture> guiGraphics = new ArrayList<GUITexture>();
 	
 	public static void main(String[] args) {
 		//initialize display & tools
@@ -142,7 +142,7 @@ public class Main {
 		GUITexture guiBarrack = new GUITexture(loader.loadTexture("Kaserne"), new Vector2f(-0.45f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiBarrackBack);
 		guis.add(guiBarrack);
-		GUIText barrackCostText = new GUIText("Cost : " + Barrack.goldCost + " Gold, " + Barrack.woodCost + " Wood", 1f, font, new Vector2f(0.2f, 0.95f), 0.14f, true);
+		GUIText barrackCostText = new GUIText("Cost : " + Barrack.goldCost + " Gold, " + Barrack.woodCost + " Wood", 1f, font, new Vector2f(0.205f, 0.95f), 0.14f, true);
 		barrackCostText.setColour(255, 255, 0);
 		GUIText barrackText = new GUIText("Press 'K'", 1.5f, font, new Vector2f(0.24f, 0.774f), 0.08f, true);
 		barrackText.setColour(255, 255, 0);
@@ -152,7 +152,7 @@ public class Main {
 		GUITexture guiFarm = new GUITexture(loader.loadTexture("Farm"), new Vector2f(-0.1f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiFarmBack);
 		guis.add(guiFarm);
-		GUIText farmCostText = new GUIText("Cost : " + Farm.goldCost + " Gold, " + Farm.woodCost + " Wood", 1f, font, new Vector2f(0.37f, 0.95f), 0.14f, true);
+		GUIText farmCostText = new GUIText("Cost : " + Farm.goldCost + " Gold, " + Farm.woodCost + " Wood", 1f, font, new Vector2f(0.38f, 0.95f), 0.14f, true);
 		farmCostText.setColour(255, 255, 0);
 		GUIText farmText = new GUIText("Press 'F'", 1.5f, font, new Vector2f(0.42f, 0.774f), 0.08f, true);
 		farmText.setColour(255, 255, 0);
@@ -162,7 +162,7 @@ public class Main {
 		GUITexture guiWood = new GUITexture(loader.loadTexture("Holzfäller"), new Vector2f(0.25f, -0.75f), new Vector2f(0.07f, 0.112f));
 		guis.add(guiWoodBack);
 		guis.add(guiWood);
-		GUIText woodCostText = new GUIText("Cost : " + Lumberjack.goldCost + " Gold, " + Lumberjack.woodCost + " Wood", 1f, font, new Vector2f(0.54f, 0.95f), 0.14f, true);
+		GUIText woodCostText = new GUIText("Cost : " + Lumberjack.goldCost + " Gold, " + Lumberjack.woodCost + " Wood", 1f, font, new Vector2f(0.555f, 0.95f), 0.14f, true);
 		woodCostText.setColour(255, 255, 0);
 		GUIText woodText = new GUIText("Press 'L'", 1.5f, font, new Vector2f(0.6f, 0.774f), 0.08f, true);
 		woodText.setColour(255, 255, 0);
@@ -172,7 +172,7 @@ public class Main {
 	public static void renderGUI(FontType font, GUIRenderer guiRenderer, List<GUITexture> guiGraphics) {
 		GUIText goldText = new GUIText("Gold : " + gold, 2, font, new Vector2f(0.01f, 0.01f), 1f, false);
 		goldText.setColour(255, 255, 0);
-		GUIText foodText = new GUIText("Bread : " + food, 2, font, new Vector2f(0.01f, 0.06f), 1f, false);
+		GUIText foodText = new GUIText("Food : " + food, 2, font, new Vector2f(0.01f, 0.06f), 1f, false);
 		foodText.setColour(255, 255, 0);
 		GUIText woodText = new GUIText("Wood : " + wood, 2, font, new Vector2f(0.01f, 0.11f), 1f, false);
 		woodText.setColour(200, 200, 200);
@@ -211,7 +211,10 @@ public class Main {
 				images.get(i).update(picker);
 			}
 		}
-		for(Soldier soldier: soldiers) { soldier.updateImage(); }
+		for(Soldier soldier: soldiers) { 
+			soldier.updateImage(); 
+			soldier.health.setPosition(new Vector2f(soldier.getPosition().x, soldier.getPosition().y - 0.15f));
+		}
 		
 		if(updateRate == 60) {
 			if(!goldmines.isEmpty()) {
@@ -229,7 +232,7 @@ public class Main {
 		
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-	            if(Keyboard.getEventKey() == Keyboard.KEY_G) {
+				if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 					if(gold >= Goldmine.goldCost && wood >= Goldmine.woodCost) {
 						disableImages();
 	            		Goldmine goldmine = new Goldmine(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, goldmines.size());

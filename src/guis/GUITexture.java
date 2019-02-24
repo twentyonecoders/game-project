@@ -22,6 +22,10 @@ public class GUITexture {
 		return position;
 	}
 
+	public void setPosition(Vector2f position) {
+		this.position = position;
+	}
+
 	public Vector2f getScale() {
 		return scale;
 	}
