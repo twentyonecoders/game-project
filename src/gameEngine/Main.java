@@ -49,6 +49,7 @@ public class Main {
 	
 	public static boolean moving = false;
 	static boolean canSpawn = false;
+	static boolean canBuySoldiers = false;
 	
 	public static List<Image> images = new ArrayList<Image>();
 	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
@@ -254,6 +255,7 @@ public class Main {
 	            		Barrack barrack = new Barrack(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, barracks.size());
 	            		barracks.add(barrack);
 	            		soldierGUI(loader, guiGraphics, font);
+	            		canBuySoldiers = true;
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_F) {
 	            	if(gold >= Farm.goldCost && wood >= Farm.woodCost) {
@@ -268,7 +270,7 @@ public class Main {
 	            		lumberjacks.add(lumberjack);
 	            	}
 	            } else if(Keyboard.getEventKey() == Keyboard.KEY_1) {
-	            	if(gold >= Soldier.goldCost && food >= Soldier.foodCost) {
+	            	if(canBuySoldiers && gold >= Soldier.goldCost && food >= Soldier.foodCost) {
 	            		disableImages();
 	            		Soldier soldier = new Soldier(new Vector3f(0, 0, 1), 0, 0, 0, 0.075f, Main.soldiers.size());
 	            		soldiers.add(soldier);

@@ -59,6 +59,7 @@ public class Goldmine extends Image{
 		} else if(hp == 20) { health.setTexture(loader.loadTexture("/HPBar/50%"));
 		} else if(hp == 10) { health.setTexture(loader.loadTexture("/HPBar/25%"));
 		} else if(hp == 0) {
+			Main.guiGraphics.remove(health);
 			dead = true;
 			setClicked(false);
 		}
@@ -107,7 +108,6 @@ public class Goldmine extends Image{
 			prodRate *= 2;
 			Main.gold -= upgradeCost;
 			upgradeCost *= 2;
-			hideGUI();
 		} else { System.out.println("Goldmine Nr " + ID + " has reached the maximum level!"); }
 	}
 }

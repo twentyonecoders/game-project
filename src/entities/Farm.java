@@ -78,7 +78,6 @@ public class Farm extends Image {
 			prodRate++;
 			Main.gold -= upgradeCost;
 			upgradeCost *= 2;
-			hideGUI();
 		} else { System.out.println("Farm Nr " + ID + " has reached the maximum level!"); }
 	}
 }

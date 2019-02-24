@@ -32,7 +32,7 @@ public class Image extends Entity{
 	protected GUITexture health;
 	
 	protected int hp;
-	private float width, height;
+	private float width_right, width_left, height;
 	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale, int type) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
@@ -43,12 +43,14 @@ public class Image extends Entity{
 		source.play(buildBuffer);
 		//buildings
 		if(type == 1) {
-			width = 0.15f;
+			width_right = 0.15f;
+			width_left = 0.15f;
 			height = 0.24f;
 		}
 		//soldiers, zombies
 		else if(type == 2) {
-			width = 0.05f;
+			width_right = 0.06f;
+			width_left = 0.08f;
 			height = 0.2f;
 		}
 		health = new GUITexture(loader.loadTexture("/HPBar/100%"), new Vector2f(0, 0), new Vector2f(0.07f, 0.02f));
@@ -82,7 +84,7 @@ public class Image extends Entity{
 		if(!this.isLocationSet()) {
 			int collisions = 0;
 			setPosition(picker.getCurrentRay());
-			health.setPosition(new Vector2f(position.x, position.y - 0.15f));
+			health.setPosition(new Vector2f(picker.getCurrentRay().x, picker.getCurrentRay().y - 0.15f));
 			if(picker.isLeftButtonDown()) {
 				for(int i = 0; i < Main.images.size(); i++) {
 					if(hit(Main.images.get(i).getPosition())) { collisions++; }
@@ -109,8 +111,8 @@ public class Image extends Entity{
 	}
 	
 	public boolean hit(MousePicker picker) {
-		if(picker.getCurrentRay().x <= getPosition().x + width / 2 &&
-				picker.getCurrentRay().x >= getPosition().x - width / 2 &&
+		if(picker.getCurrentRay().x <= getPosition().x + width_right / 2 &&
+				picker.getCurrentRay().x >= getPosition().x - width_left / 2 &&
 				picker.getCurrentRay().y <= getPosition().y + height / 2 &&
 				picker.getCurrentRay().y >= getPosition().y - height / 2) {
 			return true;
@@ -120,8 +122,8 @@ public class Image extends Entity{
 	}
 	
 	protected boolean hit(Vector3f pos) {
-		if(pos.x <= getPosition().x + width &&
-				pos.x >= getPosition().x - width &&
+		if(pos.x <= getPosition().x + width_right &&
+				pos.x >= getPosition().x - width_left &&
 				pos.y <= getPosition().y + height &&
 				pos.y >= getPosition().y - height) {
 			return true;

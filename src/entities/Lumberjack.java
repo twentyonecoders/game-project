@@ -97,7 +97,6 @@ public class Lumberjack extends Image{
 			prodRate++;
 			Main.gold -= upgradeCost;
 			upgradeCost *= 2;
-			hideGUI();
 		} else { System.out.println("Goldmine Nr " + ID + " has reached the maximum level!"); }
 	}
 }
