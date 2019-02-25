@@ -114,15 +114,12 @@ public class Main {
 			renderer.render(background, shader);
 			
 			if(!running) {
-				guiRenderer.render(Main.guiGraphics);
-				TextMaster.render();
 				menu.update(loader);
+				guiRenderer.render(guiGraphics);
+				TextMaster.render();
 			} else if(running) {
 				camera.move(picker);
 				updateGame(picker, loader);
-				if(canSpawn) { 
-					spawnEnemy(); 
-				}
 				
 				for(Image image: images) { renderer.render(image, shader); }
 				renderGUI(font, guiRenderer, guiGraphics);
@@ -148,7 +145,7 @@ public class Main {
 				canSpawn = true;
 			}
 		};
-		timer.scheduleAtFixedRate(spawnTask, 10 * 1000, 10 * 1000);
+		timer.scheduleAtFixedRate(spawnTask, 5 * 1000, 10 * 1000);
 		source.play(backgroundBuffer);
 		setUpGUI(loader);
 		running = true;
@@ -225,13 +222,15 @@ public class Main {
 	}
 
 	//spawn zombies
-	public static void spawnEnemy() {
-		Random random = new Random();
-		float x = -0.8f + random.nextFloat() * (-0.8f + 0.6f);
-		float y = -0.5f + random.nextFloat() * (0.8f + 0.8f);
-		Zombie zombie = new Zombie(new Vector3f(x, y, 1), 0, 0, 0, 0.075f, zombies.size());
-		zombie.setClicked(false);
-		zombies.add(zombie);
+	public static void spawnEnemy(int amount) {
+		for(int i = 0; i < amount; i++) {
+			Random random = new Random();
+			float x = -0.8f + random.nextFloat() * (-0.8f + 0.6f);
+			float y = -0.5f + random.nextFloat() * (0.8f + 0.8f);
+			Zombie zombie = new Zombie(new Vector3f(x, y, 1), 0, 0, 0, 0.075f, zombies.size());
+			zombie.setClicked(false);
+			zombies.add(zombie);
+		}
 		canSpawn = false;
 	}
 	
@@ -250,17 +249,15 @@ public class Main {
 		}
 		
 		//execute clicked object update function
-		for(int i = 0; i < images.size(); i++) {
-			if(images.get(i).isClicked()) {
-				images.get(i).update(picker);
-			}
-		}
+		for(Image image: images) { if(image.isClicked()) { image.update(picker); } }
 		
 		//update healthbars and soldier images
 		for(Soldier soldier: soldiers) { soldier.updateGraphic(); }
 		for(Goldmine goldmine: goldmines) { goldmine.updateGraphic(); }
 
+		
 		//update zombies
+		if(canSpawn) { spawnEnemy(5); }
 		if(updateRate == 60) {
 			if(!goldmines.isEmpty()) {
 				for(Zombie zombie: zombies) {
@@ -270,12 +267,11 @@ public class Main {
 			updateRate = 0;
 		}
 		
+		//user input management
 		if(picker.isRightButtonDown()) {
 			disableImages();
 			moving = false;
 		}
-		
-		//user input management
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_G) {
