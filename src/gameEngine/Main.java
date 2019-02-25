@@ -52,6 +52,7 @@ public class Main {
 	
 	public static boolean moving = false;
 	static boolean canSpawn = false;
+	static boolean canUpdate = false;
 	static boolean canBuySoldiers = false;
 	
 	static boolean running = false;
@@ -145,7 +146,13 @@ public class Main {
 				canSpawn = true;
 			}
 		};
+		TimerTask updateTask = new TimerTask() {
+			public void run() {
+				canUpdate = true;
+			}
+		};
 		timer.scheduleAtFixedRate(spawnTask, 5 * 1000, 10 * 1000);
+		timer.scheduleAtFixedRate(updateTask, 0, 1 * 1000);
 		source.play(backgroundBuffer);
 		setUpGUI(loader);
 		running = true;
@@ -258,13 +265,9 @@ public class Main {
 		
 		//update zombies
 		if(canSpawn) { spawnEnemy(5); }
-		if(updateRate == 60) {
-			if(!goldmines.isEmpty()) {
-				for(Zombie zombie: zombies) {
-					zombie.update();
-				}
-			}
-			updateRate = 0;
+		if(canUpdate) { 
+			for(Zombie zombie: zombies) { zombie.update(); }
+			canUpdate = false;
 		}
 		
 		//user input management

@@ -21,8 +21,8 @@ public class Zombie extends Image{
 	
 	public void update() {
 		if(checkSoldier()) {}
-		else if(hitsGoldmine());
-		else {
+		else if(!Main.goldmines.isEmpty() && hitsGoldmine());
+		else if(!Main.goldmines.isEmpty()){
 			target = nearestObject().getPosition();
 			increasePosition(calculateDirection(target).x, calculateDirection(target).y, 0);
 			health.setPosition(new Vector2f(position.x, position.y - 0.15f));
