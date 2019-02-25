@@ -51,6 +51,8 @@ public class Main {
 	static boolean canSpawn = false;
 	static boolean canBuySoldiers = false;
 	
+	static boolean running = false;
+	
 	public static List<Image> images = new ArrayList<Image>();
 	public static List<Goldmine> goldmines = new ArrayList<Goldmine>();
 	public static List<Barrack> barracks = new ArrayList<Barrack>();
@@ -84,7 +86,11 @@ public class Main {
 		
 		images.clear();
 		guiGraphics.clear();
-		setUpGUI(loader, guiGraphics, font);
+		
+		GUIText playText = new GUIText("PLAY", 2f, font, new Vector2f(0, 0.475f), 1, true);
+		playText.setColour(255, 255, 0);
+		GUITexture playButton = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(0, 0), new Vector2f(0.15f, 0.1f));
+		guiGraphics.add(playButton);
 		Entity background = new Entity(new TexturedModel(loader.loadToVAO(Image.vertices, Image.textureCoords, Image.indices), 
 				new ModelTexture(loader.loadTexture("Background"))), new Vector3f(0, 0, 1), 0, 0, 0, 1);
 
@@ -95,24 +101,36 @@ public class Main {
 				canSpawn = true;
 			}
 		};
-		timer.scheduleAtFixedRate(spawnTask, 5000, 10 * 1000);
-		
-		//source.play(backgroundBuffer);
 		
 		//display update loop
 		while(!Display.isCloseRequested()) {
-			camera.move(picker);
-			picker.update();
-			updateGame(picker, source);
-			if(canSpawn) { spawnEnemy(); }
-			
 			renderer.prepare();
 			shader.start();
 			shader.loadViewMatrix(camera);
-			
 			renderer.render(background, shader);
-			for(Image image: images) { renderer.render(image, shader); }
-			renderGUI(font, guiRenderer, guiGraphics);
+			
+			if(!running) {
+				guiRenderer.render(guiGraphics);
+				TextMaster.render();
+				while(Keyboard.next()) {
+					if(Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_P) {
+						TextMaster.removeText(playText);
+						guiGraphics.remove(playButton);
+						timer.scheduleAtFixedRate(spawnTask, 5000, 10 * 1000);
+						source.play(backgroundBuffer);			
+						setUpGUI(loader, guiGraphics);
+						running = true;
+					}
+				}
+			} else if(running) {
+				camera.move(picker);
+				picker.update();
+				updateGame(picker, source);
+				if(canSpawn) { spawnEnemy(); }
+			
+				for(Image image: images) { renderer.render(image, shader); }
+				renderGUI(font, guiRenderer, guiGraphics);
+			}
 			
 			shader.stop();
 			DisplayManager.updateDisplay();
@@ -128,7 +146,7 @@ public class Main {
 	}
 	
 	//initialize Building GUI
-	public static void setUpGUI(Loader loader, List<GUITexture> guis, FontType font) {
+	public static void setUpGUI(Loader loader, List<GUITexture> guis) {
 		//Goldmine GUI
 		GUITexture guiGoldMineBack = new GUITexture(loader.loadTexture("Marmor"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.15f, 0.24f));
 		GUITexture guiGoldMine = new GUITexture(loader.loadTexture("GoldMine"), new Vector2f(-0.8f, -0.75f), new Vector2f(0.07f, 0.112f));
