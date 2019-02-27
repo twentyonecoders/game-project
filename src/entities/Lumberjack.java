@@ -39,8 +39,8 @@ public class Lumberjack extends Image{
 		Main.wood -= woodCost;
 	}
 	
-	public void update(MousePicker picker) {
-		super.update(picker);
+	public void run(MousePicker picker) {
+		super.run(picker);
 		if(picker.isLeftButtonDown()) {
 			collect();
 		}
@@ -51,10 +51,6 @@ public class Lumberjack extends Image{
 					setLocationSet(false);
 				}
 			}
-		}
-		if(hp == 0) {
-			dead = true;
-			setClicked(false);
 		}
 	}
 	

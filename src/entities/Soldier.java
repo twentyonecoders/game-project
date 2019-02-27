@@ -9,7 +9,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 import fonts.GUIText;
 import gameEngine.Main;
-import guis.GUITexture;
 import toolBox.MousePicker;
 
 public class Soldier extends Image{
@@ -30,8 +29,8 @@ public class Soldier extends Image{
 		Main.food -= foodCost;
 	}
 	
-	public void update(MousePicker picker) {
-		super.update(picker);
+	public void run(MousePicker picker) {
+		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_M) { setLocationSet(false); }
@@ -39,16 +38,17 @@ public class Soldier extends Image{
 		}
 	}
 	
-	public void updateGraphic() {
+	public void update() {
 		if(!active) {
 			changeImage("Soldat_inactive");
 		} else if (active) {
 			changeImage("Soldat");
 		}
-		if(hp == 15) { health.setTexture(loader.loadTexture("/HPBar/75%"));
-		} else if(hp == 10) { health.setTexture(loader.loadTexture("/HPBar/50%"));
-		} else if(hp == 5) { health.setTexture(loader.loadTexture("/HPBar/25%"));
-		} else if(hp == 0) {
+		if(hp > 15) { health.setTexture(loader.loadTexture("/HPBar/100%"));
+		} else if(hp > 10) { health.setTexture(loader.loadTexture("/HPBar/75%"));
+		} else if(hp > 5) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+		} else if(hp > 0) { health.setTexture(loader.loadTexture("/HPBar/25%"));
+		} else if(hp <= 0) {
 			Main.guiGraphics.remove(health);
 			dead = true;
 			setClicked(false);

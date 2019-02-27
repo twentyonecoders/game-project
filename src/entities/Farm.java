@@ -37,8 +37,8 @@ public class Farm extends Image {
 		Main.wood -= woodCost;
 	}
 	
-	public void update(MousePicker picker) {
-		super.update(picker);
+	public void run(MousePicker picker) {
+		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
 				if(Keyboard.getEventKey() == Keyboard.KEY_U && Main.gold >= upgradeCost) { upgrade(); }

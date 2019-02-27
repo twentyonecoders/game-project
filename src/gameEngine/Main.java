@@ -47,12 +47,10 @@ public class Main {
 	public static int gold = 1500;
 	public static int wood = 500;
 	public static int food = 100;
-
-	static int updateRate = 0;
 	
 	public static boolean moving = false;
 	static boolean canSpawn = false;
-	static boolean canUpdate = false;
+	static boolean canMove = false;
 	static boolean canBuySoldiers = false;
 	
 	static boolean running = false;
@@ -148,7 +146,7 @@ public class Main {
 		};
 		TimerTask updateTask = new TimerTask() {
 			public void run() {
-				canUpdate = true;
+				canMove = true;
 			}
 		};
 		timer.scheduleAtFixedRate(spawnTask, 5 * 1000, 10 * 1000);
@@ -248,7 +246,7 @@ public class Main {
 		//when no object is moved, detect if object is clicked
 		if(!moving) {
 			for(Image image: images) {
-				if(picker.isLeftButtonDown() && image.hit(picker)) {
+				if(picker.isLeftButtonDown() && image.hit(picker) && image.type != 3) {
 					disableImages();
 					image.setClicked(true);
 				}
@@ -256,18 +254,19 @@ public class Main {
 		}
 		
 		//execute clicked object update function
-		for(Image image: images) { if(image.isClicked()) { image.update(picker); } }
+		for(Image image: images) { if(image.isClicked()) { image.run(picker); } }
 		
 		//update healthbars and soldier images
-		for(Soldier soldier: soldiers) { soldier.updateGraphic(); }
-		for(Goldmine goldmine: goldmines) { goldmine.updateGraphic(); }
+		for(Soldier soldier: soldiers) { soldier.update(); }
+		for(Zombie zombie: zombies) { zombie.update(); }
+		for(Goldmine goldmine: goldmines) { goldmine.update(); }
 
 		
 		//update zombies
-		if(canSpawn) { spawnEnemy(5); }
-		if(canUpdate) { 
-			for(Zombie zombie: zombies) { zombie.update(); }
-			canUpdate = false;
+		if(canSpawn) { spawnEnemy(2); }
+		if(canMove) { 
+			for(Zombie zombie: zombies) { zombie.move(); }
+			canMove = false;
 		}
 		
 		//user input management
@@ -318,8 +317,6 @@ public class Main {
 		soldiers.removeIf((Soldier soldier) -> soldier.dead == true);
 		goldmines.removeIf((Goldmine goldmine) -> goldmine.dead == true);
 		images.removeIf((Image image) -> image.dead == true);
-		
-		updateRate++;
 	}
 	
 	//deavticate objects to avoid multiple objects from being active

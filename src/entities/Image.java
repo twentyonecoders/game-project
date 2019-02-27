@@ -25,6 +25,7 @@ public class Image extends Entity{
 	
 	public List<GUIText> texts = new ArrayList<GUIText>();
 	
+	public int type;
 	public boolean clicked = true;
 	public boolean locationSet = false;
 	public boolean dead = false;
@@ -36,11 +37,14 @@ public class Image extends Entity{
 	
 	public Image (String fileName, Vector3f position, float rotX, float rotY, float rotZ, float scale, int type) {
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
+		this.type = type;
 		Main.images.add(this);
 		Main.moving = true;
-		AudioMaster.sources.add(source);
-		source.setVolume(0.1f);
-		source.play(buildBuffer);
+		if(type == 1) {
+			AudioMaster.sources.add(source);
+			source.setVolume(0.1f);
+			source.play(buildBuffer);
+		}
 		//buildings
 		if(type == 1) {
 			width_right = 0.15f;
@@ -48,7 +52,7 @@ public class Image extends Entity{
 			height = 0.24f;
 		}
 		//soldiers, zombies
-		else if(type == 2) {
+		else if(type == 2 || type == 3) {
 			width_right = 0.06f;
 			width_left = 0.08f;
 			height = 0.2f;
@@ -80,7 +84,7 @@ public class Image extends Entity{
 		setModel(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))));
 	}
 	
-	public void update(MousePicker picker) {
+	public void run(MousePicker picker) {
 		if(!this.isLocationSet()) {
 			int collisions = 0;
 			setPosition(picker.getCurrentRay());
