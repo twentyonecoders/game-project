@@ -30,7 +30,6 @@ public class Farm extends Image {
 	public Farm(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Farm", position, rotX, rotY, rotZ, scale, 1);
 		ID = id;
-		hp = 50;
 		generateFood();
 		AudioMaster.sources.add(source);
 		Main.gold -= goldCost;

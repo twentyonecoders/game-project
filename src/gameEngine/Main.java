@@ -151,7 +151,7 @@ public class Main {
 		};
 		timer.scheduleAtFixedRate(spawnTask, 5 * 1000, 10 * 1000);
 		timer.scheduleAtFixedRate(updateTask, 0, 1 * 1000);
-		source.play(backgroundBuffer);
+		//source.play(backgroundBuffer);
 		setUpGUI(loader);
 		running = true;
 	}
@@ -259,8 +259,8 @@ public class Main {
 		//update healthbars and soldier images
 		for(Soldier soldier: soldiers) { soldier.update(); }
 		for(Zombie zombie: zombies) { zombie.update(); }
-		for(Goldmine goldmine: goldmines) { goldmine.update(); }
-
+		//for(Goldmine goldmine: goldmines) { goldmine.update(); }
+		for(Image image: images) { image.update(); }
 		
 		//update zombies
 		if(canSpawn) { spawnEnemy(2); }

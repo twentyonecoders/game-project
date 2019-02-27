@@ -32,7 +32,6 @@ public class Lumberjack extends Image{
 	public Lumberjack(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Holzfäller", position, rotX, rotY, rotZ, scale, 1);
 		ID = id;
-		hp = 50;
 		generate();
 		AudioMaster.sources.add(source);
 		Main.gold -= goldCost;

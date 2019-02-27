@@ -19,38 +19,28 @@ public class Zombie extends Image{
 		health.setPosition(new Vector2f(position.x, position.y - 0.15f));
 	}
 	
-	public void update() {
-		if(hp > 5) { health.setTexture(loader.loadTexture("/HPBar/100%"));
-		} else if(hp > 0) { health.setTexture(loader.loadTexture("/HPBar/50%"));
-		} else if(hp <= 0) {
-			Main.guiGraphics.remove(health);
-			dead = true;
-			setClicked(false);
-		}
-	}
-	
 	public void move() {
 		if(!hitObject()) {
 			if(!Main.goldmines.isEmpty()){
 				target = nearestObject().getPosition();
 				Vector3f step = (calcStep(calcDirection(target)));
 				increasePosition(step.x, step.y, 0);
-				health.setPosition(new Vector2f(position.x, position.y));
+				health.setPosition(new Vector2f(position.x, position.y - 0.15f));
 			}
 		}
 	}
 	
 	private boolean hitObject() {
 		for(Soldier soldier: Main.soldiers) {
-			if(hit(soldier.getPosition()) && soldier.isActive()) {
+			if(soldier.hit(position) && soldier.isActive()) {
 				soldier.hp -= 5;
 				hp -= 5;
 				return true;
 			}
 		}
-		for(Goldmine goldmine: Main.goldmines) {
-			if(hit(goldmine.getPosition())) {
-				goldmine.hp -= 5;
+		for(Image image: Main.images) {
+			if(image.hit(position) && image.type == 1) {
+				image.hp -= 5;
 				return true;
 			}
 		}

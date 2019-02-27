@@ -32,7 +32,6 @@ public class Goldmine extends Image{
 	public Goldmine(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super("Goldmine_1", position, rotX, rotY, rotZ, scale, 1);
 		ID = id;
-		hp = 40;
 		generate();
 		AudioMaster.sources.add(source);
 		Main.gold -= goldCost;
@@ -51,18 +50,6 @@ public class Goldmine extends Image{
 					setLocationSet(false);
 				}
 			}
-		}
-	}
-	
-	public void update() {
-		if(hp > 30) { health.setTexture(loader.loadTexture("/HPBar/100%"));
-		} else if(hp > 20) { health.setTexture(loader.loadTexture("/HPBar/75%"));
-		} else if(hp > 10) { health.setTexture(loader.loadTexture("/HPBar/50%"));
-		} else if(hp > 0) { health.setTexture(loader.loadTexture("/HPBar/25%"));
-		} else if(hp <= 0) {
-			Main.guiGraphics.remove(health);
-			dead = true;
-			setClicked(false);
 		}
 	}
 	

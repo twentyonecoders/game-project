@@ -50,9 +50,14 @@ public class Image extends Entity{
 			width_right = 0.15f;
 			width_left = 0.15f;
 			height = 0.24f;
+			hp = 40;
 		}
-		//soldiers, zombies
-		else if(type == 2 || type == 3) {
+		//soldiers
+		if(type == 2) { hp = 20; }
+		//zombies
+		if(type == 3) { hp = 10; }
+		//soldiers & zombies hitbox
+		if(type == 2 || type == 3) {
 			width_right = 0.06f;
 			width_left = 0.08f;
 			height = 0.2f;
@@ -95,6 +100,31 @@ public class Image extends Entity{
 				}
 				if(collisions < 2) { setLocationSet(true); }
 			}
+		}
+	}
+	
+	public void update() {
+		if(type == 1) {
+			if(hp > 30) { health.setTexture(loader.loadTexture("/HPBar/100%"));
+			} else if(hp > 20) { health.setTexture(loader.loadTexture("/HPBar/75%"));
+			} else if(hp > 10) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+			} else if(hp > 0) { health.setTexture(loader.loadTexture("/HPBar/25%"));
+			}
+		} else if(type == 2) {
+			if(hp > 15) { health.setTexture(loader.loadTexture("/HPBar/100%"));
+			} else if(hp > 10) { health.setTexture(loader.loadTexture("/HPBar/75%"));
+			} else if(hp > 5) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+			} else if(hp > 0) { health.setTexture(loader.loadTexture("/HPBar/25%"));
+			}
+		} else if(type == 3) {
+			if(hp > 5) { health.setTexture(loader.loadTexture("/HPBar/100%"));
+			} else if(hp > 0) { health.setTexture(loader.loadTexture("/HPBar/50%"));
+			}
+		}
+		if(hp <= 0) {
+			Main.guiGraphics.remove(health);
+			dead = true;
+			setClicked(false);
 		}
 	}
 	
