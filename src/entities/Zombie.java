@@ -3,6 +3,7 @@ package entities;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import gameEngine.Game;
 import gameEngine.Main;
 
 public class Zombie extends Image{
@@ -21,7 +22,7 @@ public class Zombie extends Image{
 	
 	public void move() {
 		if(!hitObject()) {
-			if(!Main.goldmines.isEmpty()){
+			if(!Game.goldmines.isEmpty()){
 				target = nearestObject().getPosition();
 				Vector3f step = (calcStep(calcDirection(target)));
 				increasePosition(step.x, step.y, 0);
@@ -31,7 +32,7 @@ public class Zombie extends Image{
 	}
 	
 	private boolean hitObject() {
-		for(Soldier soldier: Main.soldiers) {
+		for(Soldier soldier: Game.soldiers) {
 			if(soldier.hit(position) && soldier.isActive()) {
 				soldier.hp -= 5;
 				hp -= 5;
@@ -49,14 +50,14 @@ public class Zombie extends Image{
 
 	private Image nearestObject(){
 		Image nearest = null;
-		nearest = Main.goldmines.get(0);
+		nearest = Game.goldmines.get(0);
 		for(Image image: Main.images) {
 			if(image.type != 3 && calcDirection(image.getPosition()).length() < calcDirection(nearest.getPosition()).length()) {
 				nearest = image;
 			}
 		}
 		
-		for(Goldmine goldmine: Main.goldmines) {
+		for(Goldmine goldmine: Game.goldmines) {
 			if(calcDirection(goldmine.getPosition()).length() < calcDirection(nearest.getPosition()).length()) {
 				nearest = goldmine;
 			}

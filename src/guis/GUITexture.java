@@ -4,6 +4,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 public class GUITexture {
 
+	public boolean dead;
+	
 	private int texture;
 	private Vector2f position;
 	private Vector2f scale;

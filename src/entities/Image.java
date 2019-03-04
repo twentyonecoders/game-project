@@ -10,6 +10,7 @@ import audio.AudioMaster;
 import audio.Source;
 import fonts.GUIText;
 import fonts.TextMaster;
+import gameEngine.Game;
 import gameEngine.Main;
 import guis.GUITexture;
 import models.ModelTexture;
@@ -39,7 +40,7 @@ public class Image extends Entity{
 		super(new TexturedModel(loader.loadToVAO(vertices, textureCoords, indices), new ModelTexture(loader.loadTexture(fileName))), position, rotX, rotY, rotZ, scale);
 		this.type = type;
 		Main.images.add(this);
-		Main.moving = true;
+		Game.moving = true;
 		if(type == 1) {
 			AudioMaster.sources.add(source);
 			source.setVolume(0.1f);
@@ -135,7 +136,7 @@ public class Image extends Entity{
 		} else { 
 			hideGUI();
 			setScale(0.075f); 
-			Main.moving = false;
+			Game.moving = false;
 		}
 		this.clicked = clicked;
 	}
@@ -180,8 +181,8 @@ public class Image extends Entity{
 	}
 
 	protected void setLocationSet(boolean locationSet) {
-		if(locationSet) { Main.moving = false; }
-		else { Main.moving = true; }
+		if(locationSet) { Game.moving = false; }
+		else { Game.moving = true; }
 		this.locationSet = locationSet;
 	}
 }

@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import audio.AudioMaster;
 import audio.Source;
 import fonts.GUIText;
+import gameEngine.Game;
 import gameEngine.Main;
 import toolBox.MousePicker;
 
@@ -34,8 +35,8 @@ public class Goldmine extends Image{
 		ID = id;
 		generate();
 		AudioMaster.sources.add(source);
-		Main.gold -= goldCost;
-		Main.wood -= woodCost;
+		Game.gold -= goldCost;
+		Game.wood -= woodCost;
 	}
 	
 	public void run(MousePicker picker) {
@@ -45,7 +46,7 @@ public class Goldmine extends Image{
 		}
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_U && Main.gold >= upgradeCost) { upgrade(); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_U && Game.gold >= upgradeCost) { upgrade(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { 
 					setLocationSet(false);
 				}
@@ -79,7 +80,7 @@ public class Goldmine extends Image{
 	}
 	
 	private void collect() {
-		Main.gold += gold;
+		Game.gold += gold;
 		gold = 0;
 		source.play(collectBuffer);
 	}
@@ -94,7 +95,7 @@ public class Goldmine extends Image{
 			else if(level == 5) { changeImage("Goldmine_5"); }
 			max += 10 * level;
 			prodRate *= 2;
-			Main.gold -= upgradeCost;
+			Game.gold -= upgradeCost;
 			upgradeCost *= 2;
 		} else { System.out.println("Goldmine Nr " + ID + " has reached the maximum level!"); }
 	}

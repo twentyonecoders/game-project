@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import fonts.GUIText;
+import gameEngine.Game;
 import gameEngine.Main;
 import toolBox.MousePicker;
 
@@ -17,8 +18,8 @@ public class Barrack extends Image{
 	public Barrack(Vector3f position, float rotX, float rotY, float rotZ, float scale, int id) {
 		super(("Kaserne"), position, rotX, rotY, rotZ, scale, 1);
 		this.ID = id;
-		Main.gold -= goldCost;
-		Main.wood -= woodCost;
+		Game.gold -= goldCost;
+		Game.wood -= woodCost;
 	}
 	
 	public void run(MousePicker picker) {

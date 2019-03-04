@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import fonts.GUIText;
+import gameEngine.Game;
 import gameEngine.Main;
 import toolBox.MousePicker;
 
@@ -25,8 +26,8 @@ public class Soldier extends Image{
 		hp = 20;
 		active = true;
 		useFood();
-		Main.gold -= goldCost;
-		Main.food -= foodCost;
+		Game.gold -= goldCost;
+		Game.food -= foodCost;
 	}
 	
 	public void run(MousePicker picker) {
@@ -59,8 +60,8 @@ public class Soldier extends Image{
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			public void run() {
-				if(Main.food > 0) {
-					Main.food--;
+				if(Game.food > 0) {
+					Game.food--;
 					setActive(true);
 				} else {
 					setActive(false);

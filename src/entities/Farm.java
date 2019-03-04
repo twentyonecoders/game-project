@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import audio.AudioMaster;
 import audio.Source;
 import fonts.GUIText;
+import gameEngine.Game;
 import gameEngine.Main;
 import toolBox.MousePicker;
 
@@ -32,15 +33,15 @@ public class Farm extends Image {
 		ID = id;
 		generateFood();
 		AudioMaster.sources.add(source);
-		Main.gold -= goldCost;
-		Main.wood -= woodCost;
+		Game.gold -= goldCost;
+		Game.wood -= woodCost;
 	}
 	
 	public void run(MousePicker picker) {
 		super.run(picker);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKeyState()) {
-				if(Keyboard.getEventKey() == Keyboard.KEY_U && Main.gold >= upgradeCost) { upgrade(); }
+				if(Keyboard.getEventKey() == Keyboard.KEY_U && Game.gold >= upgradeCost) { upgrade(); }
 				else if(Keyboard.getEventKey() == Keyboard.KEY_M) { 
 					setLocationSet(false);
 				}
@@ -64,7 +65,7 @@ public class Farm extends Image {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				if(run)
-					Main.food += prodRate;
+					Game.food += prodRate;
 			}
 		};
 		timer.schedule(task, 1000, 1000);
@@ -75,7 +76,7 @@ public class Farm extends Image {
 			source.play(upgradeBuffer);
 			level++;
 			prodRate++;
-			Main.gold -= upgradeCost;
+			Game.gold -= upgradeCost;
 			upgradeCost *= 2;
 		} else { System.out.println("Farm Nr " + ID + " has reached the maximum level!"); }
 	}
