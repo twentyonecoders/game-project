@@ -8,7 +8,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
 public class DisplayManager {
-
+	
+	public static boolean open;
+	
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
 	public static final int FPS_CAP = 60;
@@ -23,8 +25,8 @@ public class DisplayManager {
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-		
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+		open = true;
 	}
 	
 	public static void updateDisplay() {

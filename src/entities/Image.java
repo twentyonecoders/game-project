@@ -31,7 +31,7 @@ public class Image extends Entity{
 	public boolean locationSet = false;
 	public boolean dead = false;
 	
-	protected GUITexture health;
+	public GUITexture health;
 	
 	protected int hp;
 	private float width_right, width_left, height;
@@ -41,11 +41,9 @@ public class Image extends Entity{
 		this.type = type;
 		Main.images.add(this);
 		Game.moving = true;
-		if(type == 1) {
-			AudioMaster.sources.add(source);
-			source.setVolume(0.1f);
-			source.play(buildBuffer);
-		}
+		/*-------------------------------------
+						hitbox
+		-------------------------------------*/
 		//buildings
 		if(type == 1) {
 			width_right = 0.15f;
@@ -53,16 +51,24 @@ public class Image extends Entity{
 			height = 0.24f;
 			hp = 40;
 		}
-		//soldiers
-		if(type == 2) { hp = 20; }
-		//zombies
-		if(type == 3) { hp = 10; }
-		//soldiers & zombies hitbox
-		if(type == 2 || type == 3) {
+		//soldiers & zombies
+		else if(type == 2 || type == 3) {
 			width_right = 0.06f;
 			width_left = 0.08f;
 			height = 0.2f;
 		}
+		//-------------------------------------
+		//building sound for buildings
+		if(type == 1) {
+			AudioMaster.sources.add(source);
+			source.setVolume(0.1f);
+			source.play(buildBuffer);
+		}
+		//soldiers
+		else if(type == 2) { hp = 20; }
+		//zombies
+		else if(type == 3) { hp = 10; }
+		//-------------------------------------
 		health = new GUITexture(loader.loadTexture("/HPBar/100%"), new Vector2f(0, 0), new Vector2f(0.07f, 0.02f));
 		Main.guiGraphics.add(health);
 	}

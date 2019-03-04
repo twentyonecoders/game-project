@@ -68,14 +68,16 @@ public class Main {
 							display update loop
 		-----------------------------------------------------------------*/
 		
-		while(!Display.isCloseRequested()) {
+		while(DisplayManager.open || !Display.isCloseRequested()) {
+			picker.update();
 			renderer.prepare();
 			shader.start();
 			shader.loadViewMatrix(camera);
 			renderer.render(background, shader);
 			
+			
 			if(!running) {
-				Menu.update(loader);
+				Menu.update(loader, picker);
 				guiRenderer.render(guiGraphics);
 				TextMaster.render();
 			} else if(running) {

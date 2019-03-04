@@ -75,6 +75,7 @@ public class Game {
 	
 	//start game
 	public static void startGame(Loader loader) {
+		for(Image image: Main.images) { Main.guiGraphics.add(image.health); }
 		source.continuePlaying();
 		timer.scheduleAtFixedRate(spawnTask, 0 * 1000, 10 * 1000);
 		timer.scheduleAtFixedRate(updateTask, 0, 1 * 1000);
@@ -99,8 +100,6 @@ public class Game {
 
 	//process game logic
 	public static void updateGame(MousePicker picker, Loader loader) {
-		picker.update();
-		
 		//when no object is moving, detect if object is clicked
 		if(!moving) {
 			for(Image image: Main.images) {
